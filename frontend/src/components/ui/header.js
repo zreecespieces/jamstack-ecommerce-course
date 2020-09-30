@@ -25,8 +25,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Header() {
+export default function Header({ categories }) {
   const classes = useStyles()
+
+  const routes = [
+    ...categories,
+    { node: { name: "Contact Us", strapiId: "contact" } },
+  ]
 
   return (
     <AppBar color="transparent" elevation={0}>
@@ -40,10 +45,9 @@ export default function Header() {
           value={0}
           classes={{ indicator: classes.coloredIndicator, root: classes.tabs }}
         >
-          <Tab label="Hats" />
-          <Tab label="Hoodies" />
-          <Tab label="Shirts" />
-          <Tab label="Contact Us" />
+          {routes.map(route => (
+            <Tab label={route.node.name} key={route.node.strapiId} />
+          ))}
         </Tabs>
         <IconButton>
           <img src={search} alt="search" />
