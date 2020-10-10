@@ -2,12 +2,11 @@ import React from "react"
 import { Link } from "gatsby"
 
 import Layout from "../components/ui/layout"
+import HeroBlock from "../components/home/HeroBlock"
 
 const IndexPage = () => (
   <Layout>
-    {/* <h1>Hi Udemy</h1>
-      <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p> */}
+    <HeroBlock />
   </Layout>
 )
 
