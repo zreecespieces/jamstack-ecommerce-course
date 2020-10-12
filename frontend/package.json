@@ -21,7 +21,8 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.1.0",
-    "react-lottie": "^1.2.3"
+    "react-lottie": "^1.2.3",
+    "react-spring-3d-carousel": "^1.2.0"
   },
   "devDependencies": {
     "prettier": "2.1.1"
