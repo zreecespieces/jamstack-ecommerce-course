@@ -10,6 +10,14 @@ import animationData from "../../images/data.json"
 const useStyles = makeStyles(theme => ({
   textContainer: {
     padding: "2rem",
+    [theme.breakpoints.down("xs")]: {
+      padding: "1rem",
+    },
+  },
+  heading: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "3.5rem",
+    },
   },
 }))
 
@@ -31,7 +39,11 @@ export default function HeroBlock() {
       <Grid item classes={{ root: classes.textContainer }}>
         <Grid container direction="column">
           <Grid item>
-            <Typography align="center" variant="h1">
+            <Typography
+              align="center"
+              variant="h1"
+              classes={{ root: classes.heading }}
+            >
               The Premier
               <br />
               Developer Clothing Line
@@ -50,7 +62,7 @@ export default function HeroBlock() {
           options={defaultOptions}
           width={
             matchesXS
-              ? "25rem"
+              ? "20rem"
               : matchesMD
               ? "30rem"
               : matchesLG

@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("md")]: {
       padding: "0 1rem",
     },
+    [theme.breakpoints.down("xs")]: {
+      padding: "0",
+    },
   },
   container: {
     marginBottom: "15rem",
@@ -28,6 +31,15 @@ const useStyles = makeStyles(theme => ({
   headingContainer: {
     [theme.breakpoints.down("md")]: {
       padding: "0 1rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "0",
+    },
+  },
+  icon: {
+    [theme.breakpoints.down("xs")]: {
+      height: "18rem",
+      width: "20rem",
     },
   },
 }))
@@ -45,7 +57,7 @@ export default function CallToAction() {
       direction={matchesMD ? "column" : "row"}
     >
       <Grid item>
-        <img src={cta} alt="quality committed" />
+        <img src={cta} className={classes.icon} alt="quality committed" />
       </Grid>
       <Grid item>
         <Grid container direction="column">
