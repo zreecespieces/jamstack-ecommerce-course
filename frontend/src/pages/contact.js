@@ -8,7 +8,7 @@ import { Link } from "gatsby"
 
 import address from "../images/address.svg"
 import phone from "../images/phone-adornment.svg"
-import email from "../images/email-adornment.svg"
+import Email from "../images/EmailAdornment"
 import send from "../images/send.svg"
 
 import Layout from "../components/ui/layout"
@@ -47,14 +47,25 @@ const useStyles = makeStyles(theme => ({
   },
   contactInfo: {
     fontSize: "1.5rem",
+    marginLeft: "1rem",
   },
   contactIcon: {
     height: "3rem",
     width: "3rem",
+    marginRight: "2rem",
   },
   contactEmailIcon: {
     height: "2.25rem",
     width: "3rem",
+    marginRight: "2rem",
+  },
+  infoContainer: {
+    height: "15rem",
+  },
+  middleInfo: {
+    borderTop: "2px solid #fff",
+    borderBottom: "2px solid #fff",
+    padding: "1rem 0",
   },
 }))
 
@@ -106,7 +117,12 @@ const ContactPage = () => {
 
         {/* Contact Info */}
         <Grid item>
-          <Grid container direction="column">
+          <Grid
+            container
+            direction="column"
+            justify="space-between"
+            classes={{ root: classes.infoContainer }}
+          >
             <Grid item container alignItems="center">
               <Grid item>
                 <img
@@ -124,7 +140,12 @@ const ContactPage = () => {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item container alignItems="center">
+            <Grid
+              item
+              container
+              alignItems="center"
+              classes={{ root: classes.middleInfo }}
+            >
               <Grid item>
                 <img className={classes.contactIcon} src={phone} alt="phone" />
               </Grid>
@@ -138,12 +159,8 @@ const ContactPage = () => {
               </Grid>
             </Grid>
             <Grid item container alignItems="center">
-              <Grid item>
-                <img
-                  className={classes.contactEmailIcon}
-                  src={email}
-                  alt="email"
-                />
+              <Grid item classes={{ root: classes.contactEmailIcon }}>
+                <Email color="#fff" />
               </Grid>
               <Grid item>
                 <Typography
