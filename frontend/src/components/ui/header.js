@@ -25,7 +25,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
   },
   logo: {
-    fontSize: "3rem",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "3rem",
+    },
   },
   logoText: {
     color: theme.palette.common.offBlack,
