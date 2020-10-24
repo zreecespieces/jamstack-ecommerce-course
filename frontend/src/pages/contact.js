@@ -202,6 +202,33 @@ const ContactPage = () => {
     },
   }
 
+  const info = [
+    {
+      label: (
+        <span>
+          1234 S Example St {matchesXS ? <br /> : null}Wichita, KS 67111
+        </span>
+      ),
+      icon: <img className={classes.contactIcon} src={address} alt="address" />,
+    },
+    {
+      label: "(555) 555-5555",
+      icon: (
+        <div className={classes.contactIcon}>
+          <PhoneAdornment />
+        </div>
+      ),
+    },
+    {
+      label: "zachary@var-x.com",
+      icon: (
+        <div className={classes.contactEmailIcon}>
+          <Email color="#fff" />
+        </div>
+      ),
+    },
+  ]
+
   const disabled =
     Object.keys(errors).some(error => errors[error] === true) ||
     Object.keys(errors).length !== 4
@@ -243,6 +270,7 @@ const ContactPage = () => {
                   return (
                     <Grid
                       item
+                      key={field}
                       classes={{
                         root:
                           field === "message"
@@ -272,7 +300,8 @@ const ContactPage = () => {
                             ...fields[field].inputClasses,
                           },
                           disableUnderline: field === "message",
-                          startAdornment: (
+                          startAdornment:
+                          field === "message" ? undefined : (
                             <InputAdornment position="start">
                               {fields[field].adornment}
                             </InputAdornment>
@@ -310,58 +339,27 @@ const ContactPage = () => {
             justify="space-between"
             classes={{ root: classes.infoContainer }}
           >
-            <Grid item container alignItems="center">
-              <Grid item classes={{ root: classes.iconContainer }}>
-                <img
-                  className={classes.contactIcon}
-                  src={address}
-                  alt="address"
-                />
+            {info.map((section, i) => (
+              <Grid
+                item
+                key={section.label}
+                container
+                alignItems="center"
+                classes={{ root: i === 1 ? classes.middleInfo : undefined }}
+              >
+                <Grid item classes={{ root: classes.iconContainer }}>
+                  {section.icon}
+                </Grid>
+                <Grid item>
+                  <Typography
+                    classes={{ root: classes.contactInfo }}
+                    variant="h2"
+                  >
+                    {section.label}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Typography
-                  variant="h2"
-                  classes={{ root: classes.contactInfo }}
-                >
-                  1234 S Example St {matchesXS ? <br /> : null}Wichita, KS 67111
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              container
-              alignItems="center"
-              classes={{ root: classes.middleInfo }}
-            >
-              <Grid item classes={{ root: classes.iconContainer }}>
-                <div className={classes.contactIcon}>
-                  <PhoneAdornment />
-                </div>
-              </Grid>
-              <Grid item>
-                <Typography
-                  classes={{ root: classes.contactInfo }}
-                  variant="h2"
-                >
-                  (555) 555-5555
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item container alignItems="center">
-              <Grid item classes={{ root: classes.iconContainer }}>
-                <div className={classes.contactEmailIcon}>
-                  <Email color="#fff" />
-                </div>
-              </Grid>
-              <Grid item>
-                <Typography
-                  classes={{ root: classes.contactInfo }}
-                  variant="h2"
-                >
-                  zachary@var-x.com
-                </Typography>
-              </Grid>
-            </Grid>
+            ))}
           </Grid>
         </Grid>
       </Grid>
