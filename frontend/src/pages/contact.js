@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Button from "@material-ui/core/Button"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import clsx from "clsx"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import { Link } from "gatsby"
@@ -22,12 +23,23 @@ const useStyles = makeStyles(theme => ({
     height: "45rem",
     backgroundColor: theme.palette.primary.main,
     marginBottom: "10rem",
+    [theme.breakpoints.down("md")]: {
+      marginTop: "8rem",
+      height: "90rem",
+    },
   },
   formContainer: {
     height: "100%",
   },
   formWrapper: {
     height: "100%",
+    [theme.breakpoints.down("md")]: {
+      height: "50%",
+      marginTop: "-8rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+    },
   },
   blockContainer: {
     backgroundColor: theme.palette.secondary.main,
@@ -36,6 +48,12 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "30rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+    },
   },
   titleContainer: {
     marginTop: "-4rem",
@@ -65,6 +83,9 @@ const useStyles = makeStyles(theme => ({
   },
   infoContainer: {
     height: "21.25rem",
+    [theme.breakpoints.down("xs")]: {
+      height: "15.25rem",
+    },
   },
   middleInfo: {
     borderTop: "2px solid #fff",
@@ -77,9 +98,16 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      height: "5rem",
+      width: "6rem",
+    },
   },
   textField: {
     width: "30rem",
+    [theme.breakpoints.down("sm")]: {
+      width: "20rem",
+    },
   },
   input: {
     color: "#fff",
@@ -110,6 +138,11 @@ const useStyles = makeStyles(theme => ({
   buttonDisabled: {
     backgroundColor: theme.palette.grey[500],
   },
+  sendMessage: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "2.5rem",
+    },
+  },
   "@global": {
     ".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before": {
       borderBottom: "2px solid #fff",
@@ -124,6 +157,9 @@ const ContactPage = () => {
   const classes = useStyles()
   const theme = useTheme()
 
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -137,6 +173,7 @@ const ContactPage = () => {
         justify="space-around"
         alignItems="center"
         classes={{ root: classes.mainContainer }}
+        direction={matchesMD ? "column" : "row"}
       >
         {/* Contact Form */}
         <Grid item classes={{ root: classes.formWrapper }}>
@@ -297,12 +334,14 @@ const ContactPage = () => {
               classes={{
                 root: clsx(classes.buttonContainer, classes.blockContainer, {
                   [classes.buttonDisabled]:
-                  Object.keys(errors).some(error => errors[error] === true) ||
-                  Object.keys(errors).length !== 4,
+                    Object.keys(errors).some(error => errors[error] === true) ||
+                    Object.keys(errors).length !== 4,
                 }),
               }}
             >
-              <Typography variant="h4">send message</Typography>
+              <Typography variant="h4" classes={{ root: classes.sendMessage }}>
+                send message
+              </Typography>
               <img src={send} className={classes.sendIcon} alt="send message" />
             </Grid>
           </Grid>
@@ -329,7 +368,7 @@ const ContactPage = () => {
                   variant="h2"
                   classes={{ root: classes.contactInfo }}
                 >
-                  1234 S Example St Wichita, KS 67111
+                  1234 S Example St {matchesXS ? <br /> : null}Wichita, KS 67111
                 </Typography>
               </Grid>
             </Grid>
