@@ -15,6 +15,7 @@ import nameAdornment from "../images/name-adornment.svg"
 import PhoneAdornment from "../images/PhoneAdornment"
 
 import Layout from "../components/ui/layout"
+import validate from "../components/ui/validate"
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
