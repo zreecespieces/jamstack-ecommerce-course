@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
 
+import Sort from "./Sort"
+
 import filter from "../../images/filter.svg"
 import sort from "../../images/sort.svg"
 
@@ -31,13 +33,15 @@ export default function FunctionContainer() {
           <Grid item container justify="space-around" alignItems="center">
             {items.map(item => (
               <Grid item key={item.alt}>
-                <IconButton>
+                <IconButton onClick={() => setOption(item.alt)}>
                   <img src={item.icon} alt={item.alt} />
                 </IconButton>
               </Grid>
             ))}
           </Grid>
         )
+      case "sort":
+        return <Sort setOption={setOption} />
       default:
         return null
     }
