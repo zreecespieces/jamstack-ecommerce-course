@@ -39,6 +39,7 @@ export default function ProductFrameGrid({ product, variant }) {
   const [open, setOpen] = useState(false)
 
   const imgURL = process.env.GATSBY_STRAPI_URL + variant.images[0].url
+  const productName = product.node.name.split(" ")[0]
 
   return (
     <Grid item>
@@ -51,12 +52,15 @@ export default function ProductFrameGrid({ product, variant }) {
           />
         </Grid>
         <Grid item classes={{ root: classes.title }}>
-          <Typography variant="h5">
-            {product.node.name.split(" ")[0]}
-          </Typography>
+          <Typography variant="h5">{productName}</Typography>
         </Grid>
       </Grid>
-      <QuickView open={open} setOpen={setOpen} url={imgURL} />
+      <QuickView
+        open={open}
+        setOpen={setOpen}
+        url={imgURL}
+        name={productName}
+      />
     </Grid>
   )
 }
