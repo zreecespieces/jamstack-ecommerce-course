@@ -60,6 +60,7 @@ export default function ProductFrameGrid({ product, variant }) {
         setOpen={setOpen}
         url={imgURL}
         name={productName}
+        price={variant.price}
       />
     </Grid>
   )

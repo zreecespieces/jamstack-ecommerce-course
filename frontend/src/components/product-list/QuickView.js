@@ -2,6 +2,7 @@ import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
+import Chip from "@material-ui/core/Chip"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import { makeStyles } from "@material-ui/core/styles"
@@ -53,9 +54,16 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     padding: "0.5rem 1rem",
   },
+  chipRoot: {
+    transform: "scale(1.5)",
+  },
+  chipContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
 }))
 
-export default function QuickView({ open, setOpen, url, name }) {
+export default function QuickView({ open, setOpen, url, name, price }) {
   const classes = useStyles()
 
   return (
@@ -104,6 +112,9 @@ export default function QuickView({ open, setOpen, url, name }) {
                   </Button>
                 </Grid>
               </Grid>
+            </Grid>
+            <Grid item classes={{ root: classes.chipContainer }}>
+              <Chip label={`$${price}`} classes={{ root: classes.chipRoot }} />
             </Grid>
           </Grid>
         </Grid>

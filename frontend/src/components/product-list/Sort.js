@@ -3,25 +3,11 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import Chip from "@material-ui/core/Chip"
-import { makeStyles } from "@material-ui/core/styles"
 
 import sort from "../../images/sort.svg"
 import close from "../../images/close-outline.svg"
 
-const useStyles = makeStyles(theme => ({
-  chipRoot: {
-    backgroundColor: theme.palette.secondary.main,
-  },
-  chipLabel: {
-    ...theme.typography.body1,
-    color: "#fff",
-    fontWeight: 500,
-  },
-}))
-
 export default function Sort({ setOption }) {
-  const classes = useStyles()
-
   const sortOptions = [
     { label: "A-Z" },
     { label: "Z-A" },
@@ -43,10 +29,7 @@ export default function Sort({ setOption }) {
         <Grid container justify="space-around">
           {sortOptions.map(option => (
             <Grid item key={option.label}>
-              <Chip
-                label={option.label}
-                classes={{ root: classes.chipRoot, label: classes.chipLabel }}
-              />
+              <Chip label={option.label} />
             </Grid>
           ))}
         </Grid>
