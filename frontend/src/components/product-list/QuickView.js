@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
@@ -73,6 +73,7 @@ export default function QuickView({
   product,
 }) {
   const classes = useStyles()
+  const [selectedSize, setSelectedSize] = useState(null)
 
   var sizes = []
   product.node.variants.map(variant => sizes.push(variant.size))
@@ -135,7 +136,11 @@ export default function QuickView({
             <Grid item>
               <Grid container direction="column">
                 <Grid item>
-                  <Sizes sizes={sizes} />
+                  <Sizes
+                    sizes={sizes}
+                    selectedSize={selectedSize}
+                    setSelectedSize={setSelectedSize}
+                  />
                 </Grid>
               </Grid>
             </Grid>
