@@ -61,6 +61,7 @@ export default function ProductFrameGrid({ product, variant }) {
         url={imgURL}
         name={productName}
         price={variant.price}
+        product={product}
       />
     </Grid>
   )
