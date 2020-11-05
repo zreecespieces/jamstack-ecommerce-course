@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Rating from "../home/Rating"
 import Sizes from "./Sizes"
+import Swatches from "./Swatches"
 
 import frame from "../../images/selected-frame.svg"
 import explore from "../../images/explore.svg"
@@ -34,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.primary.main,
     height: "13rem",
     marginTop: "2rem",
+    padding: "0.5rem 1rem",
   },
   stock: {
     color: "#fff",
@@ -53,7 +55,6 @@ const useStyles = makeStyles(theme => ({
   },
   infoContainer: {
     height: "100%",
-    padding: "0.5rem 1rem",
   },
   chipRoot: {
     transform: "scale(1.5)",
@@ -76,7 +77,11 @@ export default function QuickView({
   const [selectedSize, setSelectedSize] = useState(null)
 
   var sizes = []
-  product.node.variants.map(variant => sizes.push(variant.size))
+  var colors = []
+  product.node.variants.map(variant => {
+    sizes.push(variant.size)
+    colors.push(variant.color)
+  })
 
   return (
     <Dialog
@@ -135,13 +140,12 @@ export default function QuickView({
             </Grid>
             <Grid item>
               <Grid container direction="column">
-                <Grid item>
-                  <Sizes
-                    sizes={sizes}
-                    selectedSize={selectedSize}
-                    setSelectedSize={setSelectedSize}
-                  />
-                </Grid>
+                <Sizes
+                  sizes={sizes}
+                  selectedSize={selectedSize}
+                  setSelectedSize={setSelectedSize}
+                />
+                <Swatches colors={colors} />
               </Grid>
             </Grid>
           </Grid>
