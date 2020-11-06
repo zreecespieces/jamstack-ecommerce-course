@@ -75,6 +75,7 @@ export default function QuickView({
 }) {
   const classes = useStyles()
   const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedColor, setSelectedColor] = useState(null)
 
   var sizes = []
   var colors = []
@@ -145,7 +146,11 @@ export default function QuickView({
                   selectedSize={selectedSize}
                   setSelectedSize={setSelectedSize}
                 />
-                <Swatches colors={colors} />
+                <Swatches
+                  selectedColor={selectedColor}
+                  setSelectedColor={setSelectedColor}
+                  colors={colors}
+                />
               </Grid>
             </Grid>
           </Grid>
