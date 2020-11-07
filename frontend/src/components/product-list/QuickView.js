@@ -64,6 +64,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
   },
+  qtyContainer: {
+    marginTop: "2.25rem",
+  },
 }))
 
 export default function QuickView({
@@ -73,17 +76,14 @@ export default function QuickView({
   name,
   price,
   product,
+  sizes,
+  colors,
+  selectedSize,
+  selectedColor,
+  setSelectedSize,
+  setSelectedColor,
 }) {
   const classes = useStyles()
-  const [selectedSize, setSelectedSize] = useState(null)
-  const [selectedColor, setSelectedColor] = useState(null)
-
-  var sizes = []
-  var colors = []
-  product.node.variants.map(variant => {
-    sizes.push(variant.size)
-    colors.push(variant.color)
-  })
 
   return (
     <Dialog
@@ -152,7 +152,9 @@ export default function QuickView({
                   setSelectedColor={setSelectedColor}
                   colors={colors}
                 />
-                <QtyButton />
+                <span className={classes.qtyContainer}>
+                  <QtyButton />
+                </span>
               </Grid>
             </Grid>
           </Grid>

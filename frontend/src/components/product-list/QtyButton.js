@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
   },
   mainGroup: {
     height: "3rem",
-    marginTop: "2.25rem",
   },
   editButtons: {
     height: "1.525rem",
