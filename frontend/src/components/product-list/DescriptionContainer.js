@@ -54,9 +54,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function DescriptionContainer({ name, description }) {
+export default function DescriptionContainer({
+  name,
+  description,
+  layout,
+  setLayout,
+}) {
   const classes = useStyles()
-  const [layout, setLayout] = useState("grid")
 
   return (
     <Grid
