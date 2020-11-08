@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react"
 import Fab from "@material-ui/core/Fab"
+import Pagination from "@material-ui/lab/Pagination"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import { graphql } from "gatsby"
@@ -19,6 +20,22 @@ const useStyles = makeStyles(theme => ({
     width: "5rem",
     height: "5rem",
   },
+  pagination: {
+    alignSelf: "flex-end",
+    marginRight: "2%",
+    marginTop: "-3rem",
+    marginBottom: "4rem",
+  },
+  "@global": {
+    ".MuiPaginationItem-root": {
+      fontFamily: "Montserrat",
+      fontSize: "2rem",
+      color: theme.palette.primary.main,
+      "&.Mui-selected": {
+        color: "#fff",
+      },
+    },
+  },
 }))
 
 export default function ProductList({
@@ -29,11 +46,19 @@ export default function ProductList({
 }) {
   const classes = useStyles()
   const [layout, setLayout] = useState("grid")
+  const [page, setPage] = useState(1)
   const scrollRef = useRef(null)
 
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" })
   }
+
+  const productsPerPage = layout === "grid" ? 16 : 6
+  var numVariants = 0
+
+  products.map(product => (numVariants += product.node.variants.length))
+
+  const numPages = Math.ceil(numVariants / productsPerPage)
 
   return (
     <Layout>
@@ -45,8 +70,21 @@ export default function ProductList({
           description={description}
           layout={layout}
           setLayout={setLayout}
+          setPage={setPage}
         />
-        <ListOfProducts layout={layout} products={products} />
+        <ListOfProducts
+          page={page}
+          productsPerPage={productsPerPage}
+          layout={layout}
+          products={products}
+        />
+        <Pagination
+          count={numPages}
+          page={page}
+          onChange={(e, newPage) => setPage(newPage)}
+          color="primary"
+          classes={{ root: classes.pagination }}
+        />
         <Fab onClick={scroll} color="primary" classes={{ root: classes.fab }}>
           ^
         </Fab>
