@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import { makeStyles } from "@material-ui/core/styles"
+import { Link } from "gatsby"
 
 import Rating from "../home/Rating"
 import Sizes from "./Sizes"
@@ -37,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     height: "13rem",
     marginTop: "2rem",
     padding: "0.5rem 1rem",
+    position: "relative",
   },
   stock: {
     color: "#fff",
@@ -67,6 +69,15 @@ const useStyles = makeStyles(theme => ({
   qtyContainer: {
     marginTop: "2.25rem",
   },
+  infoItem: {
+    position: "absolute",
+    left: "1rem",
+    height: "calc(100% - 1rem)",
+  },
+  actionsItem: {
+    position: "absolute",
+    right: "1rem",
+  },
 }))
 
 export default function QuickView({
@@ -93,7 +104,13 @@ export default function QuickView({
     >
       <DialogContent classes={{ root: classes.selectedFrame }}>
         <Grid container direction="column" alignItems="center">
-          <Grid item>
+          <Grid
+            item
+            component={Link}
+            to={`/${product.node.category.name.toLowerCase()}/${product.node.name
+              .split(" ")[0]
+              .toLowerCase()}`}
+          >
             <img
               src={url}
               alt="product image"
@@ -103,15 +120,19 @@ export default function QuickView({
           <Grid
             item
             container
-            justify="space-between"
+            justify="center"
             classes={{ root: classes.toolbar }}
           >
-            <Grid item>
+            <Grid item classes={{ root: classes.infoItem }}>
               <Grid
                 container
                 direction="column"
                 justify="space-between"
                 classes={{ root: classes.infoContainer }}
+                component={Link}
+                to={`/${product.node.category.name.toLowerCase()}/${product.node.name
+                  .split(" ")[0]
+                  .toLowerCase()}`}
               >
                 <Grid item>
                   <Typography variant="h4">{name}</Typography>
@@ -140,7 +161,7 @@ export default function QuickView({
             <Grid item classes={{ root: classes.chipContainer }}>
               <Chip label={`$${price}`} classes={{ root: classes.chipRoot }} />
             </Grid>
-            <Grid item>
+            <Grid item classes={{ root: classes.actionsItem }}>
               <Grid container direction="column">
                 <Sizes
                   sizes={sizes}

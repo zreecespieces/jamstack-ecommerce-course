@@ -30,7 +30,7 @@ export default function Swatches({ colors, selectedColor, setSelectedColor }) {
   return (
     <Grid item container>
       {colors.sort().map(color => (
-        <Grid item classes={{ root: classes.swatchesContainer }}>
+        <Grid key={color} item classes={{ root: classes.swatchesContainer }}>
           <Button
             onClick={() => setSelectedColor(color)}
             style={{ backgroundColor: color }}
