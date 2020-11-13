@@ -27,6 +27,12 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     width: "100%",
     padding: "1rem",
+    [theme.breakpoints.down("md")]: {
+      height: "50%",
+    },
+    [theme.breakpoints.down("sm")]: {
+      height: "26rem",
+    },
   },
   productImage: {
     height: "20rem",
@@ -68,7 +74,7 @@ export default function ProductFrameList({
     <Grid item container>
       <Grid
         item
-        xs={9}
+        lg={9}
         container
         alignItems="center"
         justify="space-around"
@@ -93,7 +99,7 @@ export default function ProductFrameList({
       </Grid>
       <Grid
         item
-        xs={3}
+        lg={3}
         container
         direction="column"
         justify="space-between"
