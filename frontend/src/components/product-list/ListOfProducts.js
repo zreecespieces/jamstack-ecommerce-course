@@ -92,24 +92,59 @@ export default function ListOfProducts({
   )
 
   var isFiltered = false
+  var filters = {}
+  var filteredProducts = []
 
-  const filteredProducts = content.filter(item => {
-    let valid
+  Object.keys(filterOptions)
+    .filter(option => filterOptions[option] !== null)
+    .map(option => {
+      filterOptions[option].forEach(value => {
+        if (value.checked) {
+          isFiltered = true
 
-    Object.keys(filterOptions)
-      .filter(option => filterOptions[option] !== null)
-      .map(option => {
-        filterOptions[option].forEach(value => {
-          if (value.checked) {
-            isFiltered = true
-            if (item.variant[option.toLowerCase()] === value.label) {
-              valid = item
-            }
+          if (filters[option] === undefined) {
+            filters[option] = []
           }
-        })
+
+          if (!filters[option].includes(value)) {
+            filters[option].push(value)
+          }
+
+          content.forEach(item => {
+            if (option === "Color") {
+              if (
+                item.variant.colorLabel === value.label &&
+                !filteredProducts.includes(item)
+              ) {
+                filteredProducts.push(item)
+              }
+            } else if (
+              item.variant[option.toLowerCase()] === value.label &&
+              !filteredProducts.includes(item)
+            ) {
+              filteredProducts.push(item)
+            }
+          })
+        }
+      })
+    })
+
+  Object.keys(filters).forEach(filter => {
+    filteredProducts = filteredProducts.filter(item => {
+      let valid
+
+      filters[filter].some(value => {
+        if (filter === "Color") {
+          if (item.variant.colorLabel === value.label) {
+            valid = item
+          }
+        } else if (item.variant[filter.toLowerCase()] === value.label) {
+          valid = item
+        }
       })
 
-    return valid
+      return valid
+    })
   })
 
   if (isFiltered) {

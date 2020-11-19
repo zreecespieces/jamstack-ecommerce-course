@@ -115,6 +115,7 @@ export const query = graphql`
             price
             size
             style
+            colorLabel
             images {
               url
             }
