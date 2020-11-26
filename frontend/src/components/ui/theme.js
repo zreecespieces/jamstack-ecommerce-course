@@ -62,6 +62,11 @@ const theme = createMuiTheme({
       fontSize: "1.5rem",
       color: grey,
     },
+    body2: {
+      fontFamily: "Montserrat",
+      fontSize: "1.5rem",
+      color: "#fff",
+    },
   },
   overrides: {
     MuiChip: {
