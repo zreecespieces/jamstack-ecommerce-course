@@ -73,6 +73,7 @@ export default function ProductFrameGrid({
   selectedSize,
   setSelectedColor,
   setSelectedSize,
+  hasStyles,
 }) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
@@ -110,7 +111,7 @@ export default function ProductFrameGrid({
             ? navigate(
                 `/${product.node.category.name.toLowerCase()}/${product.node.name
                   .split(" ")[0]
-                  .toLowerCase()}`
+                  .toLowerCase()}${hasStyles ? `?style=${variant.style}` : ""}`
               )
             : setOpen(true)
         }
@@ -133,12 +134,14 @@ export default function ProductFrameGrid({
         name={productName}
         price={variant.price}
         product={product}
+        variant={variant}
         sizes={sizes}
         colors={colors}
         selectedSize={selectedSize}
         selectedColor={selectedColor}
         setSelectedSize={setSelectedSize}
         setSelectedColor={setSelectedColor}
+        hasStyles={hasStyles}
       />
     </Grid>
   )

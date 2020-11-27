@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
 
 import Layout from "../components/ui/layout"
@@ -10,6 +10,16 @@ export default function ProductDetail({
 }) {
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [selectedImage, setSelectedImage] = useState(0)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+
+    const styledVariant = variants.filter(
+      variant => variant.style === params.get("style")
+    )[0]
+
+    setSelectedVariant(variants.indexOf(styledVariant))
+  }, [])
 
   return (
     <Layout>
