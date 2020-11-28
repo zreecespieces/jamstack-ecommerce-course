@@ -79,6 +79,7 @@ exports.createPages = async ({ graphql, actions }) => {
         category: product.node.category.name,
         description: product.node.description,
         variants: product.node.variants,
+        product: product,
       },
     })
   })
