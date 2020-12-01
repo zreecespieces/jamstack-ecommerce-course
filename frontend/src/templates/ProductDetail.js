@@ -12,9 +12,10 @@ export default function ProductDetail({
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [selectedImage, setSelectedImage] = useState(0)
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
+  const params = new URLSearchParams(window.location.search)
+  const style = params.get("style")
 
+  useEffect(() => {
     const styledVariant = variants.filter(
       variant => variant.style === params.get("style")
     )[0]
@@ -49,7 +50,7 @@ export default function ProductDetail({
     )
 
     setSelectedVariant(variantIndex)
-  }, [])
+  }, [style])
 
   return (
     <Layout>

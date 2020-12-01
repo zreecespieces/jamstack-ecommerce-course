@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
@@ -25,6 +25,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function RecentlyViewed({ products }) {
   const classes = useStyles()
+  const [firstIndex, setFirstIndex] = useState(0)
+
+  const handleNavigation = direction => {
+    if (firstIndex === 0 && direction === "backward") return null
+    if (firstIndex + 4 === products.length && direction === "forward")
+      return null
+    setFirstIndex(direction === "forward" ? firstIndex + 1 : firstIndex - 1)
+  }
 
   return (
     <Grid
@@ -35,10 +43,15 @@ export default function RecentlyViewed({ products }) {
       classes={{ root: classes.recentContainer }}
     >
       <Grid item>
-        <Button classes={{ root: classes.arrow }}>{"<"}</Button>
+        <Button
+          onClick={() => handleNavigation("backward")}
+          classes={{ root: classes.arrow }}
+        >
+          {"<"}
+        </Button>
       </Grid>
       {products
-        ? products.map(product => {
+        ? products.slice(firstIndex, firstIndex + 4).map(product => {
             const hasStyles = product.node.variants.some(
               variant => variant.style !== null
             )
@@ -56,7 +69,12 @@ export default function RecentlyViewed({ products }) {
           })
         : null}
       <Grid item>
-        <Button classes={{ root: classes.arrow }}>{">"}</Button>
+        <Button
+          onClick={() => handleNavigation("forward")}
+          classes={{ root: classes.arrow }}
+        >
+          {">"}
+        </Button>
       </Grid>
     </Grid>
   )
