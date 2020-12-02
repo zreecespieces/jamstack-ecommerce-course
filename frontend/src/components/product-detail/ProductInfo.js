@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid"
 import Chip from "@material-ui/core/Chip"
 import clsx from "clsx"
 import Typography from "@material-ui/core/Typography"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Rating from "../home/Rating"
@@ -20,12 +21,27 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
     height: "45rem",
     width: "35rem",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "58rem",
+    },
   },
   center: {
     backgroundColor: theme.palette.primary.main,
     height: "35rem",
     width: "45rem",
     position: "absolute",
+    [theme.breakpoints.down("lg")]: {
+      width: "40rem",
+    },
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "48rem",
+    },
   },
   icon: {
     height: "4rem",
@@ -52,6 +68,10 @@ const useStyles = makeStyles(theme => ({
   },
   chipContainer: {
     marginTop: "1rem",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 0,
+      marginBottom: "1rem",
+    },
   },
   chipRoot: {
     height: "3rem",
@@ -88,6 +108,8 @@ export default function ProductInfo({
   const [selectedSize, setSelectedSize] = useState(null)
   const [selectedColor, setSelectedColor] = useState(null)
 
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+
   const imageIndex = colorIndex(
     { node: { variants } },
     variants[selectedVariant],
@@ -117,7 +139,7 @@ export default function ProductInfo({
       justify="center"
       alignItems="flex-end"
       direction="column"
-      xs={6}
+      lg={6}
     >
       <Grid
         item
@@ -150,6 +172,7 @@ export default function ProductInfo({
           item
           container
           justify="space-between"
+          direction={matchesXS ? "column" : "row"}
           classes={{
             root: clsx(classes.detailsContainer, classes.sectionContainer),
           }}
@@ -198,8 +221,9 @@ export default function ProductInfo({
         <Grid
           item
           container
-          justify="space-between"
-          alignItems="center"
+          justify={matchesXS ? "space-around" : "space-between"}
+          direction={matchesXS ? "column" : "row"}
+          alignItems={matchesXS ? "flex-start" : "center"}
           classes={{
             root: clsx(classes.actionsContainer, classes.sectionContainer),
           }}
