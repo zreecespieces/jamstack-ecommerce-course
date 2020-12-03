@@ -23,6 +23,7 @@ export default function ProductDetail({
 }) {
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [stock, setStock] = useState(null)
 
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
@@ -33,7 +34,15 @@ export default function ProductDetail({
     variables: { id },
   })
 
-  console.log(data)
+  useEffect(() => {
+    if (error) {
+      setStock(-1)
+    } else if (data) {
+      setStock(data.product.variants)
+    }
+  }, [error, data])
+
+  console.log(stock)
 
   useEffect(() => {
     const styledVariant = variants.filter(
@@ -87,6 +96,7 @@ export default function ProductDetail({
             variants={variants}
             selectedVariant={selectedVariant}
             setSelectedVariant={setSelectedVariant}
+            stock={stock}
           />
         </Grid>
         <RecentlyViewed
