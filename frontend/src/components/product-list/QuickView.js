@@ -12,6 +12,7 @@ import Rating from "../home/Rating"
 import Sizes from "./Sizes"
 import Swatches from "./Swatches"
 import QtyButton from "./QtyButton"
+import { getStockDisplay } from "../product-detail/ProductInfo"
 
 import frame from "../../images/selected-frame.svg"
 import explore from "../../images/explore.svg"
@@ -95,8 +96,15 @@ export default function QuickView({
   setSelectedSize,
   setSelectedColor,
   hasStyles,
+  stock,
+  imageIndex,
 }) {
   const classes = useStyles()
+
+  const selectedVariant =
+    imageIndex === -1 ? product.node.variants.indexOf(variant) : imageIndex
+
+  const stockDisplay = getStockDisplay(stock, selectedVariant)
 
   return (
     <Dialog
@@ -142,7 +150,7 @@ export default function QuickView({
                 </Grid>
                 <Grid item>
                   <Typography variant="h3" classes={{ root: classes.stock }}>
-                    12 Currently In Stock
+                    {stockDisplay}
                   </Typography>
                   <Button classes={{ root: classes.detailButton }}>
                     <Typography

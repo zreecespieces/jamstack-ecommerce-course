@@ -87,6 +87,7 @@ export default function ProductFrameGrid({
   hasStyles,
   disableQuickView,
   small,
+  stock,
 }) {
   const classes = useStyles({ small })
   const [open, setOpen] = useState(false)
@@ -155,6 +156,8 @@ export default function ProductFrameGrid({
         setSelectedSize={setSelectedSize}
         setSelectedColor={setSelectedColor}
         hasStyles={hasStyles}
+        stock={stock}
+        imageIndex={imageIndex}
       />
     </Grid>
   )
