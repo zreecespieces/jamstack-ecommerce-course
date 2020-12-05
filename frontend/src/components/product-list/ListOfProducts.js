@@ -63,8 +63,9 @@ export default function ListOfProducts({
   const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
   const FrameHelper = ({ Frame, product, variant }) => {
-    const [selectedSize, setSelectedSize] = useState(null)
+    const [selectedSize, setSelectedSize] = useState(variant.size)
     const [selectedColor, setSelectedColor] = useState(null)
+    const [selectedVariant, setSelectedVariant] = useState(null)
     const [stock, setStock] = useState(null)
 
     const { loading, error, data } = useQuery(GET_DETAILS, {
@@ -79,13 +80,30 @@ export default function ListOfProducts({
       }
     }, [error, data])
 
+    useEffect(() => {
+      setSelectedColor(null)
+
+      const newVariant = product.node.variants.find(
+        item =>
+          item.size === selectedSize &&
+          item.style === variant.style &&
+          item.color === colors[0]
+      )
+
+      setSelectedVariant(newVariant)
+    }, [selectedSize])
+
     var sizes = []
     var colors = []
-    product.node.variants.map(variant => {
-      sizes.push(variant.size)
+    product.node.variants.map(item => {
+      sizes.push(item.size)
 
-      if (!colors.includes(variant.color)) {
-        colors.push(variant.color)
+      if (
+        !colors.includes(item.color) &&
+        item.size === selectedSize &&
+        item.style === variant.style
+      ) {
+        colors.push(item.color)
       }
     })
 
@@ -101,7 +119,7 @@ export default function ListOfProducts({
         selectedColor={selectedColor}
         setSelectedSize={setSelectedSize}
         setSelectedColor={setSelectedColor}
-        variant={variant}
+        variant={selectedVariant || variant}
         product={product}
         hasStyles={hasStyles}
         stock={stock}

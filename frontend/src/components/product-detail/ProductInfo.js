@@ -125,7 +125,9 @@ export default function ProductInfo({
   stock,
 }) {
   const classes = useStyles()
-  const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedSize, setSelectedSize] = useState(
+    variants[selectedVariant].size
+  )
   const [selectedColor, setSelectedColor] = useState(null)
 
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -141,10 +143,27 @@ export default function ProductInfo({
   variants.map(variant => {
     sizes.push(variant.size)
 
-    if (!colors.includes(variant.color)) {
+    if (
+      !colors.includes(variant.color) &&
+      variant.size === selectedSize &&
+      variant.style === variants[selectedVariant].style
+    ) {
       colors.push(variant.color)
     }
   })
+
+  useEffect(() => {
+    setSelectedColor(null)
+
+    const newVariant = variants.find(
+      variant =>
+        variant.size === selectedSize &&
+        variant.style === variants[selectedVariant].style &&
+        variant.color === colors[0]
+    )
+
+    setSelectedVariant(variants.indexOf(newVariant))
+  }, [selectedSize])
 
   useEffect(() => {
     if (imageIndex !== -1) {
