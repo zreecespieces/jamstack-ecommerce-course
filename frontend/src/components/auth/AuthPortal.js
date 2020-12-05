@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 
+import Login from "./Login"
+
 const useStyles = makeStyles(theme => ({
   paper: {
     border: `2rem solid ${theme.palette.secondary.main}`,
@@ -34,6 +36,7 @@ export default function AuthPortal() {
           <Grid
             container
             direction="column"
+            justify="space-between"
             alignItems="center"
             classes={{ root: classes.inner }}
           >
