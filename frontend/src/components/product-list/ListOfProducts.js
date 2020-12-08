@@ -63,7 +63,7 @@ export default function ListOfProducts({
   const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
   const FrameHelper = ({ Frame, product, variant }) => {
-    const [selectedSize, setSelectedSize] = useState(variant.size)
+    const [selectedSize, setSelectedSize] = useState(null)
     const [selectedColor, setSelectedColor] = useState(null)
     const [selectedVariant, setSelectedVariant] = useState(null)
     const [stock, setStock] = useState(null)
@@ -81,6 +81,8 @@ export default function ListOfProducts({
     }, [error, data])
 
     useEffect(() => {
+      if (selectedSize === null) return undefined
+
       setSelectedColor(null)
 
       const newVariant = product.node.variants.find(
@@ -100,7 +102,7 @@ export default function ListOfProducts({
 
       if (
         !colors.includes(item.color) &&
-        item.size === selectedSize &&
+        item.size === (selectedSize || variant.size) &&
         item.style === variant.style
       ) {
         colors.push(item.color)
@@ -115,7 +117,7 @@ export default function ListOfProducts({
       <Frame
         sizes={sizes}
         colors={colors}
-        selectedSize={selectedSize}
+        selectedSize={selectedSize || variant.size}
         selectedColor={selectedColor}
         setSelectedSize={setSelectedSize}
         setSelectedColor={setSelectedColor}
