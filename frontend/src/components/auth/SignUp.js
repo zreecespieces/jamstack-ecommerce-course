@@ -12,16 +12,52 @@ import nameAdornment from "../../images/name-adornment.svg"
 import forward from "../../images/forward-outline.svg"
 import backward from "../../images/backwards-outline.svg"
 
-const useStyles = makeStyles(theme => ({}))
+const useStyles = makeStyles(theme => ({
+  addUserIcon: {
+    height: "10rem",
+    width: "11rem",
+    marginTop: "5rem",
+  },
+  textField: {
+    width: "20rem",
+  },
+  input: {
+    color: theme.palette.secondary.main,
+  },
+  facebookSignUp: {
+    width: "20rem",
+    borderRadius: 50,
+    marginTop: "-3rem",
+  },
+  facebookText: {
+    textTransform: "none",
+    fontSize: "1.5rem",
+  },
+  navigation: {
+    height: "4rem",
+    width: "4rem",
+  },
+}))
 
 export default function SignUp({ steps, setSelectedStep }) {
   const classes = useStyles()
   const [name, setName] = useState("")
+  const [info, setInfo] = useState(false)
+
+  const handleNavigate = direction => {
+    if (direction === "forward") {
+      setInfo(true)
+    } else {
+      const login = steps.find(step => step.label === "Login")
+
+      setSelectedStep(steps.indexOf(login))
+    }
+  }
 
   return (
     <>
       <Grid item>
-        <img src={addUserIcon} alt="new user" />
+        <img src={addUserIcon} alt="new user" className={classes.addUserIcon} />
       </Grid>
       <Grid item>
         <TextField
@@ -42,19 +78,33 @@ export default function SignUp({ steps, setSelectedStep }) {
         />
       </Grid>
       <Grid item>
-        <Button variant="contained" color="secondary">
-          <Typography variant="h5">sign up with Facebook</Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          classes={{ root: classes.facebookSignUp }}
+        >
+          <Typography variant="h5" classes={{ root: classes.facebookText }}>
+            sign up with Facebook
+          </Typography>
         </Button>
       </Grid>
       <Grid item container justify="space-between">
         <Grid item>
-          <IconButton>
-            <img src={backward} alt="back to login" />
+          <IconButton onClick={() => handleNavigate("backward")}>
+            <img
+              src={backward}
+              alt="back to login"
+              className={classes.navigation}
+            />
           </IconButton>
         </Grid>
         <Grid item>
-          <IconButton>
-            <img src={forward} alt="continue registration" />
+          <IconButton onClick={() => handleNavigate("forward")}>
+            <img
+              src={forward}
+              alt="continue registration"
+              className={classes.navigation}
+            />
           </IconButton>
         </Grid>
       </Grid>

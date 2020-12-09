@@ -59,14 +59,6 @@ const useStyles = makeStyles(theme => ({
   reset: {
     marginTop: "-4rem",
   },
-  "@global": {
-    ".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before": {
-      borderBottom: `2px solid ${theme.palette.secondary.main}`,
-    },
-    ".MuiInput-underline:after": {
-      borderBottom: `2px solid ${theme.palette.primary.main}`,
-    },
-  },
 }))
 
 export default function Login({ steps, setSelectedStep }) {
