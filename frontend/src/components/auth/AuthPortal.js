@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Login from "./Login"
 import SignUp from "./SignUp"
+import Complete from "./Complete"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,6 +40,7 @@ export default function AuthPortal() {
   const steps = [
     { component: Login, label: "Login" },
     { component: SignUp, label: "Sign Up" },
+    { component: Complete, label: "Complete" },
   ]
 
   return (

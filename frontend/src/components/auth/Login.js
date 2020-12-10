@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   facebookText: {
     fontSize: "1.5rem",
-    fontWeight: 700,
+    fontWeight: 600,
     textTransform: "none",
   },
   facebookButton: {
