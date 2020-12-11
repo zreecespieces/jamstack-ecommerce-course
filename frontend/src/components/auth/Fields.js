@@ -27,8 +27,7 @@ export default function Fields({
 
   return Object.keys(fields).map(field => {
     const validateHelper = event => {
-      const valid = validate({ [field]: event.target.value })
-      setErrors({ ...errors, [field]: !valid[field] })
+      return validate({ [field]: event.target.value })
     }
 
     return !fields[field].hidden ? (
@@ -36,14 +35,19 @@ export default function Fields({
         <TextField
           value={values[field]}
           onChange={e => {
-            if (errors[field]) {
-              validateHelper(e)
+            const valid = validateHelper(e)
+
+            if (errors[field] || valid[field] === true) {
+              setErrors({ ...errors, [field]: !valid[field] })
             }
 
             setValues({ ...values, [field]: e.target.value })
           }}
           classes={{ root: classes.textField }}
-          onBlur={e => validateHelper(e)}
+          onBlur={e => {
+            const valid = validateHelper(e)
+            setErrors({ ...errors, [field]: !valid[field] })
+          }}
           error={errors[field]}
           helperText={errors[field] && fields[field].helperText}
           placeholder={fields[field].placeholder}

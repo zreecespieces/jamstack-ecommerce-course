@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import clsx from "clsx"
+import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
@@ -80,9 +81,23 @@ export default function SignUp({ steps, setSelectedStep }) {
   }
 
   const handleComplete = () => {
-    const complete = steps.find(step => step.label === "Complete")
+    axios
+      .post(process.env.GATSBY_STRAPI_URL + "/auth/local/register", {
+        username: values.name,
+        email: values.email,
+        password: values.password,
+      })
+      .then(response => {
+        console.log("User Profile", response.data.user)
+        console.log("JWT", response.data.jwt)
 
-    setSelectedStep(steps.indexOf(complete))
+        const complete = steps.find(step => step.label === "Complete")
+
+        setSelectedStep(steps.indexOf(complete))
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   const nameField = {
@@ -96,6 +111,10 @@ export default function SignUp({ steps, setSelectedStep }) {
   const fields = info
     ? EmailPassword(classes, false, false, visible, setVisible)
     : nameField
+
+  const disabled =
+    Object.keys(errors).some(error => errors[error] === true) ||
+    Object.keys(errors).length !== Object.keys(values).length
 
   return (
     <>
@@ -113,6 +132,7 @@ export default function SignUp({ steps, setSelectedStep }) {
         <Button
           variant="contained"
           color="secondary"
+          disabled={info && disabled}
           onClick={() => (info ? handleComplete() : null)}
           classes={{
             root: clsx(classes.facebookSignUp, {

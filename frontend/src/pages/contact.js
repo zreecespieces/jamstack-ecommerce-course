@@ -263,8 +263,7 @@ const ContactPage = () => {
               <Grid container direction="column">
                 {Object.keys(fields).map(field => {
                   const validateHelper = event => {
-                    const valid = validate({ [field]: event.target.value })
-                    setErrors({ ...errors, [field]: !valid[field] })
+                    return validate({ [field]: event.target.value })
                   }
 
                   return (
@@ -281,13 +280,18 @@ const ContactPage = () => {
                       <TextField
                         value={values[field]}
                         onChange={e => {
-                          if (errors[field]) {
-                            validateHelper(e)
+                          const valid = validateHelper(e)
+
+                          if (errors[field] || valid[field] === true) {
+                            setErrors({ ...errors, [field]: !valid[field] })
                           }
 
                           setValues({ ...values, [field]: e.target.value })
                         }}
-                        onBlur={e => validateHelper(e)}
+                        onBlur={e => {
+                          const valid = validateHelper(e)
+                          setErrors({ ...errors, [field]: !valid[field] })
+                        }}
                         error={errors[field]}
                         helperText={errors[field] && fields[field].helperText}
                         placeholder={fields[field].placeholder}
@@ -301,11 +305,11 @@ const ContactPage = () => {
                           },
                           disableUnderline: field === "message",
                           startAdornment:
-                          field === "message" ? undefined : (
-                            <InputAdornment position="start">
-                              {fields[field].adornment}
-                            </InputAdornment>
-                          ),
+                            field === "message" ? undefined : (
+                              <InputAdornment position="start">
+                                {fields[field].adornment}
+                              </InputAdornment>
+                            ),
                         }}
                       />
                     </Grid>
