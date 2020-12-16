@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "./Fields"
+import { setUser } from "../../contexts/actions"
 
 import accountIcon from "../../images/account.svg"
 import EmailAdornment from "../../images/EmailAdornment"
@@ -93,7 +94,7 @@ export const EmailPassword = (
   },
 })
 
-export default function Login({ steps, setSelectedStep }) {
+export default function Login({ steps, setSelectedStep, user, dispatchUser }) {
   const classes = useStyles()
 
   const [values, setValues] = useState({
@@ -119,8 +120,7 @@ export default function Login({ steps, setSelectedStep }) {
         password: values.password,
       })
       .then(response => {
-        console.log("User Profile", response.data.user)
-        console.log("JWT", response.data.jwt)
+        dispatchUser(setUser({ ...response.data.user, jwt: response.data.jwt }))
       })
       .catch(error => {
         console.error(error)
