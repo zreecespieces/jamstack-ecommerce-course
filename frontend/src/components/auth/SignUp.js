@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
@@ -66,6 +67,7 @@ export default function SignUp({ steps, setSelectedStep, dispatchUser }) {
   const [errors, setErrors] = useState({})
   const [visible, setVisible] = useState(false)
   const [info, setInfo] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleNavigate = direction => {
     if (direction === "forward") {
@@ -82,6 +84,8 @@ export default function SignUp({ steps, setSelectedStep, dispatchUser }) {
   }
 
   const handleComplete = () => {
+    setLoading(true)
+
     axios
       .post(process.env.GATSBY_STRAPI_URL + "/auth/local/register", {
         username: values.name,
@@ -89,6 +93,7 @@ export default function SignUp({ steps, setSelectedStep, dispatchUser }) {
         password: values.password,
       })
       .then(response => {
+        setLoading(false)
         dispatchUser(setUser({ ...response.data.user, jwt: response.data.jwt }))
 
         const complete = steps.find(step => step.label === "Complete")
@@ -96,6 +101,7 @@ export default function SignUp({ steps, setSelectedStep, dispatchUser }) {
         setSelectedStep(steps.indexOf(complete))
       })
       .catch(error => {
+        setLoading(false)
         console.error(error)
       })
   }
@@ -132,7 +138,7 @@ export default function SignUp({ steps, setSelectedStep, dispatchUser }) {
         <Button
           variant="contained"
           color="secondary"
-          disabled={info && disabled}
+          disabled={loading || (info && disabled)}
           onClick={() => (info ? handleComplete() : null)}
           classes={{
             root: clsx(classes.facebookSignUp, {
@@ -140,9 +146,13 @@ export default function SignUp({ steps, setSelectedStep, dispatchUser }) {
             }),
           }}
         >
-          <Typography variant="h5" classes={{ root: classes.facebookText }}>
-            sign up{info ? "" : " with Facebook"}
-          </Typography>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Typography variant="h5" classes={{ root: classes.facebookText }}>
+              sign up{info ? "" : " with Facebook"}
+            </Typography>
+          )}
         </Button>
       </Grid>
       <Grid item container justify="space-between">

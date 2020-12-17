@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid"
 import clsx from "clsx"
 import axios from "axios"
 import Typography from "@material-ui/core/Typography"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
@@ -104,6 +105,7 @@ export default function Login({ steps, setSelectedStep, user, dispatchUser }) {
   const [errors, setErrors] = useState({})
   const [visible, setVisible] = useState(false)
   const [forgot, setForgot] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const fields = EmailPassword(classes, false, forgot, visible, setVisible)
 
@@ -114,15 +116,19 @@ export default function Login({ steps, setSelectedStep, user, dispatchUser }) {
   }
 
   const handleLogin = () => {
+    setLoading(true)
+
     axios
       .post(process.env.GATSBY_STRAPI_URL + "/auth/local", {
         identifier: values.email,
         password: values.password,
       })
       .then(response => {
+        setLoading(false)
         dispatchUser(setUser({ ...response.data.user, jwt: response.data.jwt }))
       })
       .catch(error => {
+        setLoading(false)
         console.error(error)
       })
   }
@@ -147,7 +153,7 @@ export default function Login({ steps, setSelectedStep, user, dispatchUser }) {
         <Button
           variant="contained"
           color="secondary"
-          disabled={!forgot && disabled}
+          disabled={loading || (!forgot && disabled)}
           onClick={() => (forgot ? null : handleLogin())}
           classes={{
             root: clsx(classes.login, {
@@ -155,9 +161,13 @@ export default function Login({ steps, setSelectedStep, user, dispatchUser }) {
             }),
           }}
         >
-          <Typography variant="h5">
-            {forgot ? "reset password" : "login"}
-          </Typography>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Typography variant="h5">
+              {forgot ? "reset password" : "login"}
+            </Typography>
+          )}
         </Button>
       </Grid>
       {forgot ? null : (
