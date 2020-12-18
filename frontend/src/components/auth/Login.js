@@ -131,7 +131,13 @@ export default function Login({
       })
       .then(response => {
         setLoading(false)
-        dispatchUser(setUser({ ...response.data.user, jwt: response.data.jwt }))
+        dispatchUser(
+          setUser({
+            ...response.data.user,
+            jwt: response.data.jwt,
+            onboarding: true,
+          })
+        )
       })
       .catch(error => {
         const { message } = error.response.data.message[0].messages[0]
