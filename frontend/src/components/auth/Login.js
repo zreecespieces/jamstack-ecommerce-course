@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
 import clsx from "clsx"
 import axios from "axios"
@@ -112,6 +112,7 @@ export default function Login({
   const [visible, setVisible] = useState(false)
   const [forgot, setForgot] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const fields = EmailPassword(classes, false, forgot, visible, setVisible)
 
@@ -156,14 +157,11 @@ export default function Login({
       })
       .then(response => {
         setLoading(false)
+        setSuccess(true)
 
         dispatchFeedback(
           setSnackbar({ status: "success", message: "Reset Code Sent" })
         )
-
-        setTimeout(() => {
-          setForgot(false)
-        }, 6000)
       })
       .catch(error => {
         const { message } = error.response.data.message[0].messages[0]
@@ -176,6 +174,16 @@ export default function Login({
   const disabled =
     Object.keys(errors).some(error => errors[error] === true) ||
     Object.keys(errors).length !== Object.keys(values).length
+
+  useEffect(() => {
+    if (!success) return
+
+    const timer = setTimeout(() => {
+      setForgot(false)
+    }, 6000)
+
+    return () => clearTimeout(timer)
+  }, [success])
 
   return (
     <>
