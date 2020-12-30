@@ -11,6 +11,10 @@ export default function validate(values) {
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
         val
       ),
+    confirmation: val =>
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
+        val
+      ),
   }
 
   const valid = {}
