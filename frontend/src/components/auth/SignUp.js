@@ -145,6 +145,8 @@ export default function SignUp({
         <Button
           variant="contained"
           color="secondary"
+          component={!info && "a"}
+          href={!info && `${process.env.GATSBY_STRAPI_URL}/connect/facebook`}
           disabled={loading || (info && disabled)}
           onClick={() => (info ? handleComplete() : null)}
           classes={{
