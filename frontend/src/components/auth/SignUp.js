@@ -25,20 +25,20 @@ const useStyles = makeStyles(theme => ({
     width: "11rem",
     marginTop: "5rem",
   },
-  textField: {
-    width: "20rem",
-  },
-  input: {
-    color: theme.palette.secondary.main,
-  },
   facebookSignUp: {
     width: "20rem",
     borderRadius: 50,
     marginTop: "-3rem",
+    [theme.breakpoints.down("xs")]: {
+      width: "15rem",
+    },
   },
   facebookText: {
     textTransform: "none",
     fontSize: "1.5rem",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.25rem",
+    },
   },
   navigation: {
     height: "4rem",
@@ -145,8 +145,12 @@ export default function SignUp({
         <Button
           variant="contained"
           color="secondary"
-          component={!info && "a"}
-          href={!info && `${process.env.GATSBY_STRAPI_URL}/connect/facebook`}
+          component={!info ? "a" : undefined}
+          href={
+            !info
+              ? `${process.env.GATSBY_STRAPI_URL}/connect/facebook`
+              : undefined
+          }
           disabled={loading || (info && disabled)}
           onClick={() => (info ? handleComplete() : null)}
           classes={{
