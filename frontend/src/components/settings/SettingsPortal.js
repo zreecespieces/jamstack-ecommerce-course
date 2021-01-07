@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 import { useSprings, animated } from "react-spring"
+import useResizeAware from "react-resize-aware"
 
 import { UserContext } from "../../contexts"
 
@@ -33,11 +34,6 @@ const useStyles = makeStyles(theme => ({
     height: "12rem",
     width: "12rem",
   },
-  button: {
-    height: "22rem",
-    width: "22rem",
-    borderRadius: 25,
-  },
 }))
 
 const AnimatedButton = animated(Button)
@@ -46,6 +42,7 @@ export default function SettingsPortal() {
   const classes = useStyles()
   const { user } = useContext(UserContext)
   const [selectedSetting, setSelectedSetting] = useState(null)
+  const [resizeListener, sizes] = useResizeAware()
 
   const buttons = [
     { label: "Settings", icon: settingsIcon },
@@ -65,15 +62,41 @@ export default function SettingsPortal() {
   const springs = useSprings(
     buttons.length,
     buttons.map(button => ({
-      transform:
-        selectedSetting === button.label || selectedSetting === null
-          ? "scale(1)"
-          : "scale(0)",
+      to: async (next, cancel) => {
+        const scale = {
+          transform:
+            selectedSetting === button.label || selectedSetting === null
+              ? "scale(1)"
+              : "scale(0)",
+          delay: selectedSetting !== null ? 0 : 600,
+        }
+
+        const size = {
+          height: selectedSetting === button.label ? "60rem" : "22rem",
+          width:
+            selectedSetting === button.label ? `${sizes.width}px` : "352px",
+          borderRadius: selectedSetting === button.label ? 0 : 25,
+          delay: selectedSetting !== null ? 600 : 0,
+        }
+
+        const hide = {
+          display:
+            selectedSetting === button.label || selectedSetting === null
+              ? "flex"
+              : "none",
+          delay: 150,
+        }
+
+        await next(selectedSetting !== null ? scale : size)
+        await next(hide)
+        await next(selectedSetting !== null ? size : scale)
+      },
     }))
   )
 
   return (
     <Grid container direction="column" alignItems="center">
+      {resizeListener}
       <Grid item>
         <img src={accountIcon} alt="settings page" />
       </Grid>
@@ -90,11 +113,10 @@ export default function SettingsPortal() {
         justify="space-around"
       >
         {springs.map((prop, i) => (
-          <Grid item>
+          <Grid item key={i}>
             <AnimatedButton
               variant="contained"
               color="primary"
-              classes={{ root: classes.button }}
               onClick={() => handleClick(buttons[i].label)}
               style={prop}
             >
