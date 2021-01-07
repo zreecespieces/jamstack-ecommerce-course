@@ -13,7 +13,7 @@ import settingsIcon from "../../images/settings.svg"
 import orderHistoryIcon from "../../images/order-history.svg"
 import favoritesIcon from "../../images/favorite.svg"
 import subscriptionIcon from "../../images/subscription.svg"
-import background from "../../images/toolbar-background.svg"
+import background from "../../images/repeating-smallest.svg"
 
 const useStyles = makeStyles(theme => ({
   name: {
@@ -21,11 +21,12 @@ const useStyles = makeStyles(theme => ({
   },
   dashboard: {
     width: "100%",
-    height: "30rem",
+    minHeight: "30rem",
+    height: "auto",
     backgroundImage: `url(${background})`,
-    backgroundSize: "cover",
+    backgroundSize: "fill",
     backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
+    backgroundRepeat: "repeat",
     borderTop: `0.5rem solid ${theme.palette.primary.main}`,
     borderBottom: `0.5rem solid ${theme.palette.primary.main}`,
     margin: "5rem 0",
