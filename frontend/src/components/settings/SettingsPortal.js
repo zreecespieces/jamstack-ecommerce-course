@@ -1,8 +1,9 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
+import { useSprings, animated } from "react-spring"
 
 import { UserContext } from "../../contexts"
 
@@ -39,9 +40,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const AnimatedButton = animated(Button)
+
 export default function SettingsPortal() {
   const classes = useStyles()
   const { user } = useContext(UserContext)
+  const [selectedSetting, setSelectedSetting] = useState(null)
 
   const buttons = [
     { label: "Settings", icon: settingsIcon },
@@ -49,6 +53,24 @@ export default function SettingsPortal() {
     { label: "Favorites", icon: favoritesIcon },
     { label: "Subscriptions", icon: subscriptionIcon },
   ]
+
+  const handleClick = setting => {
+    if (selectedSetting === setting) {
+      setSelectedSetting(null)
+    } else {
+      setSelectedSetting(setting)
+    }
+  }
+
+  const springs = useSprings(
+    buttons.length,
+    buttons.map(button => ({
+      transform:
+        selectedSetting === button.label || selectedSetting === null
+          ? "scale(1)"
+          : "scale(0)",
+    }))
+  )
 
   return (
     <Grid container direction="column" alignItems="center">
@@ -67,26 +89,28 @@ export default function SettingsPortal() {
         alignItems="center"
         justify="space-around"
       >
-        {buttons.map(button => (
+        {springs.map((prop, i) => (
           <Grid item>
-            <Button
+            <AnimatedButton
               variant="contained"
               color="primary"
               classes={{ root: classes.button }}
+              onClick={() => handleClick(buttons[i].label)}
+              style={prop}
             >
               <Grid container direction="column">
                 <Grid item>
                   <img
-                    src={button.icon}
-                    alt={button.label}
+                    src={buttons[i].icon}
+                    alt={buttons[i].label}
                     className={classes.icon}
                   />
                 </Grid>
                 <Grid item>
-                  <Typography variant="h5">{button.label}</Typography>
+                  <Typography variant="h5">{buttons[i].label}</Typography>
                 </Grid>
               </Grid>
-            </Button>
+            </AnimatedButton>
           </Grid>
         ))}
       </Grid>
