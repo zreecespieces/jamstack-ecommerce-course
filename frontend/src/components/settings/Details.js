@@ -24,6 +24,43 @@ const useStyles = makeStyles(theme => ({
     width: 22,
     marginBottom: 10,
   },
+  icon: {
+    marginBottom: "3rem",
+  },
+  fieldContainer: {
+    "& > :not(:first-child)": {
+      marginLeft: "5rem",
+    },
+  },
+  slot: {
+    backgroundColor: "#fff",
+    borderRadius: 25,
+    width: "2.5rem",
+    height: "2.5rem",
+    minWidth: 0,
+    border: `0.15rem solid ${theme.palette.secondary.main}`,
+    "&:hover": {
+      backgroundColor: "#fff",
+    },
+  },
+  slotText: {
+    color: theme.palette.secondary.main,
+    marginLeft: "-0.25rem",
+  },
+  slotWrapper: {
+    marginLeft: "2rem",
+    "& > :not(:first-child)": {
+      marginLeft: "-0.5rem",
+    },
+  },
+  "@global": {
+    ".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before": {
+      borderBottom: "2px solid #fff",
+    },
+    ".MuiInput-underline:after": {
+      borderBottom: `2px solid ${theme.palette.secondary.main}`,
+    },
+  },
 }))
 
 export default function Details() {
@@ -66,10 +103,19 @@ export default function Details() {
   return (
     <Grid item container direction="column" xs={6} alignItems="center">
       <Grid item>
-        <img src={fingerprint} alt="details settings" />
+        <img
+          src={fingerprint}
+          alt="details settings"
+          className={classes.icon}
+        />
       </Grid>
       {fields.map((pair, i) => (
-        <Grid container justify="center" key={i}>
+        <Grid
+          container
+          justify="center"
+          key={i}
+          classes={{ root: classes.fieldContainer }}
+        >
           <Fields
             fields={pair}
             values={values}
@@ -80,9 +126,13 @@ export default function Details() {
         </Grid>
       ))}
       <Grid container>
-        <Grid item>
+        <Grid item classes={{ root: classes.slotWrapper }}>
           {[1, 2, 3].map(slot => (
-            <Button key={slot}>{slot}</Button>
+            <Button key={slot} classes={{ root: classes.slot }}>
+              <Typography variant="h5" classes={{ root: classes.slotText }}>
+                {slot}
+              </Typography>
+            </Button>
           ))}
         </Grid>
       </Grid>
