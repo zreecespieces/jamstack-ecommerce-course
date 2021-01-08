@@ -8,7 +8,7 @@ import Fields from "../auth/Fields"
 import { EmailPassword } from "../auth/Login"
 
 import fingerprint from "../../images/fingerprint.svg"
-import nameAdornment from "../../images/name-adornment.svg"
+import NameAdornment from "../../images/NameAdornment"
 import PhoneAdornment from "../../images/PhoneAdornment"
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: "3rem",
   },
   fieldContainer: {
+    marginBottom: "3rem",
     "& > :not(:first-child)": {
       marginLeft: "5rem",
     },
@@ -79,13 +80,14 @@ export default function Details() {
     false,
     false,
     visible,
-    setVisible
+    setVisible,
+    true
   )
   const name_phone = {
     name: {
       helperText: "you must enter a name",
       placeholder: "Name",
-      startAdornment: <img src={nameAdornment} alt="name" />,
+      startAdornment: <NameAdornment color="#fff" />,
     },
     phone: {
       helperText: "invalid phone number",
@@ -122,6 +124,7 @@ export default function Details() {
             setValues={setValues}
             errors={errors}
             setErrors={setErrors}
+            isWhite
           />
         </Grid>
       ))}
