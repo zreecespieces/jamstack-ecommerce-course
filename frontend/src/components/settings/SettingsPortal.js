@@ -29,8 +29,10 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: "fill",
     backgroundPosition: "center",
     backgroundRepeat: "repeat",
-    borderTop: `0.5rem solid ${theme.palette.primary.main}`,
-    borderBottom: `0.5rem solid ${theme.palette.primary.main}`,
+    borderTop: ({ showComponent }) =>
+      `${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
+    borderBottom: ({ showComponent }) =>
+      `${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
     margin: "5rem 0",
   },
   icon: {
@@ -52,11 +54,11 @@ const AnimatedButton = animated(Button)
 const AnimatedGrid = animated(Grid)
 
 export default function SettingsPortal() {
-  const classes = useStyles()
   const { user } = useContext(UserContext)
   const [selectedSetting, setSelectedSetting] = useState(null)
   const [resizeListener, sizes] = useResizeAware()
   const [showComponent, setShowComponent] = useState(false)
+  const classes = useStyles({ showComponent })
 
   const buttons = [
     { label: "Settings", icon: settingsIcon, component: Settings },
@@ -165,7 +167,7 @@ export default function SettingsPortal() {
                 justify="center"
               >
                 {selectedSetting === button.label && showComponent ? (
-                  <button.component />
+                  <button.component setSelectedSetting={setSelectedSetting} />
                 ) : (
                   <>
                     <Grid item>
