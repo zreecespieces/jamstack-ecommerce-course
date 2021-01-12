@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: "3rem",
   },
   fieldContainer: {
-    marginBottom: "3rem",
+    marginBottom: "2rem",
     "& > :not(:first-child)": {
       marginLeft: "5rem",
     },
