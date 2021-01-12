@@ -52,6 +52,15 @@
       "via": "users",
       "plugin": "users-permissions",
       "configurable": false
+    },
+    "paymentMethods": {
+      "type": "json"
+    },
+    "contactInfo": {
+      "type": "json"
+    },
+    "locations": {
+      "type": "json"
     }
   }
 }
