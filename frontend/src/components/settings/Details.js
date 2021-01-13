@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
@@ -51,16 +51,21 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Details() {
+export default function Details({ user }) {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
   const [values, setValues] = useState({
     name: "",
     phone: "",
     email: "",
-    password: "",
+    password: "********",
   })
   const [errors, setErrors] = useState({})
+  const [slot, setSlot] = useState(0)
+
+  useEffect(() => {
+    setValues({ ...user.contactInfo[slot], password: "********" })
+  }, [slot])
 
   const email_password = EmailPassword(
     classes,
@@ -124,7 +129,7 @@ export default function Details() {
         </Grid>
       ))}
       <Grid item container classes={{ root: classes.slotContainer }}>
-        <Slots />
+        <Slots slot={slot} setSlot={setSlot} />
       </Grid>
     </Grid>
   )
