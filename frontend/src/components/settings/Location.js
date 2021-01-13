@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Location({ user }) {
+export default function Location({ user, edit }) {
   const classes = useStyles()
   const [values, setValues] = useState({
     street: "",
@@ -92,6 +92,7 @@ export default function Location({ user }) {
           errors={errors}
           setErrors={setErrors}
           isWhite
+          disabled={!edit}
         />
       </Grid>
       <Grid item classes={{ root: classes.chipWrapper }}>

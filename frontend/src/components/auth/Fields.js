@@ -26,6 +26,7 @@ export default function Fields({
   values,
   setValues,
   isWhite,
+  disabled,
 }) {
   const classes = useStyles({ isWhite })
 
@@ -56,6 +57,7 @@ export default function Fields({
           helperText={errors[field] && fields[field].helperText}
           placeholder={fields[field].placeholder}
           type={fields[field].type}
+          disabled={disabled}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
