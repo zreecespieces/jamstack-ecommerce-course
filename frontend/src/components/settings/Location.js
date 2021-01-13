@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Location({ user, edit }) {
+export default function Location({ user, edit, setChangesMade }) {
   const classes = useStyles()
   const [values, setValues] = useState({
     street: "",
@@ -47,6 +47,14 @@ export default function Location({ user, edit }) {
   useEffect(() => {
     setValues(user.locations[slot])
   }, [slot])
+
+  useEffect(() => {
+    const changed = Object.keys(user.locations[slot]).some(
+      field => values[field] !== user.locations[slot][field]
+    )
+
+    setChangesMade(changed)
+  }, [values])
 
   const fields = {
     street: {
