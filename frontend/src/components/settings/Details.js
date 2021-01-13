@@ -51,17 +51,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Details({ user, edit, setChangesMade }) {
+export default function Details({
+  user,
+  edit,
+  setChangesMade,
+  values,
+  setValues,
+  slot,
+  setSlot,
+}) {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
-  const [values, setValues] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    password: "********",
-  })
   const [errors, setErrors] = useState({})
-  const [slot, setSlot] = useState(0)
 
   useEffect(() => {
     setValues({ ...user.contactInfo[slot], password: "********" })
