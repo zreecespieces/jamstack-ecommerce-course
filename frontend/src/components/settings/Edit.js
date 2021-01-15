@@ -7,7 +7,7 @@ import CircularProgress from "@material-ui/core/CircularProgress"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { FeedbackContext } from "../../contexts"
-import { setSnackbar } from "../../contexts/actions"
+import { setSnackbar, setUser } from "../../contexts/actions"
 
 import BackwardsIcon from "../../images/BackwardsOutline"
 import editIcon from "../../images/edit.svg"
@@ -32,6 +32,8 @@ export default function Edit({
   detailSlot,
   locationSlot,
   changesMade,
+  user,
+  dispatchUser,
 }) {
   const classes = useStyles()
   const { dispatchFeedback } = useContext(FeedbackContext)
@@ -42,6 +44,43 @@ export default function Edit({
 
     if (edit && changesMade) {
       setLoading(true)
+
+      const { password, ...newDetails } = details
+
+      axios
+        .post(
+          process.env.GATSBY_STRAPI_URL + "/users-permissions/set-settings",
+          {
+            details: newDetails,
+            detailSlot,
+            location: locations,
+            locationSlot,
+          },
+          { headers: { Authorization: `Bearer ${user.jwt}` } }
+        )
+        .then(response => {
+          setLoading(false)
+          dispatchFeedback(
+            setSnackbar({
+              status: "success",
+              message: "Settings Saved Successfully",
+            })
+          )
+          dispatchUser(
+            setUser({ ...response.data, jwt: user.jwt, onboarding: true })
+          )
+        })
+        .catch(error => {
+          setLoading(false)
+          console.error(error)
+          dispatchFeedback(
+            setSnackbar({
+              status: "error",
+              message:
+                "There was a problem saving your settings, please try again.",
+            })
+          )
+        })
     }
   }
 
@@ -62,13 +101,17 @@ export default function Edit({
         </IconButton>
       </Grid>
       <Grid item>
-        <IconButton onClick={handleEdit}>
-          <img
-            src={edit ? saveIcon : editIcon}
-            alt={`${edit ? "save" : "edit"} settings`}
-            className={classes.icon}
-          />
-        </IconButton>
+        {loading ? (
+          <CircularProgress color="secondary" size="8rem" />
+        ) : (
+          <IconButton disabled={loading} onClick={handleEdit}>
+            <img
+              src={edit ? saveIcon : editIcon}
+              alt={`${edit ? "save" : "edit"} settings`}
+              className={classes.icon}
+            />
+          </IconButton>
+        )}
       </Grid>
     </Grid>
   )
