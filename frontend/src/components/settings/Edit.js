@@ -119,7 +119,13 @@ export default function Edit({
           </IconButton>
         )}
       </Grid>
-      <Confirmation dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+      <Confirmation
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        user={user}
+        dispatchFeedback={dispatchFeedback}
+        setSnackbar={setSnackbar}
+      />
     </Grid>
   )
 }
