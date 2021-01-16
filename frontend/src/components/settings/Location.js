@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -8,6 +8,9 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "../auth/Fields"
 import Slots from "./Slots"
+
+import { FeedbackContext } from "../../contexts"
+import { setSnackbar } from "../../contexts/actions"
 
 import locationIcon from "../../images/location.svg"
 import streetAdornment from "../../images/street-adornment.svg"
@@ -48,6 +51,7 @@ export default function Location({
 }) {
   const classes = useStyles()
   const [loading, setLoading] = useState(false)
+  const { dispatchFeedback } = useContext(FeedbackContext)
 
   const getLocation = () => {
     setLoading(true)
@@ -58,10 +62,20 @@ export default function Location({
       )
       .then(response => {
         setLoading(false)
+
+        const { place_name, admin_name1 } = response.data.records[0].fields
+
+        setValues({ ...values, city: place_name, state: admin_name1 })
       })
       .catch(error => {
         setLoading(false)
         console.error(error)
+        dispatchFeedback(
+          setSnackbar({
+            status: "error",
+            message: "There was a problem with your zipcode, please try again.",
+          })
+        )
       })
   }
 
@@ -75,6 +89,14 @@ export default function Location({
     )
 
     setChangesMade(changed)
+
+    if (values.zip.length === 5) {
+      if (values.city) return
+
+      getLocation()
+    } else if (values.zip.length < 5 && values.city) {
+      setValues({ ...values, city: "", state: "" })
+    }
   }, [values])
 
   const fields = {
@@ -125,11 +147,15 @@ export default function Location({
         />
       </Grid>
       <Grid item classes={{ root: classes.chipWrapper }}>
-        <Chip
-          label={
-            values.city ? `${values.city}, ${values.state}` : "City, State"
-          }
-        />
+        {loading ? (
+          <CircularProgress color="secondary" />
+        ) : (
+          <Chip
+            label={
+              values.city ? `${values.city}, ${values.state}` : "City, State"
+            }
+          />
+        )}
       </Grid>
       <Grid item container classes={{ root: classes.slotContainer }}>
         <Slots slot={slot} setSlot={setSlot} />
