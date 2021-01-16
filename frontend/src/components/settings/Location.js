@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
+import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -45,6 +47,23 @@ export default function Location({
   setErrors,
 }) {
   const classes = useStyles()
+  const [loading, setLoading] = useState(false)
+
+  const getLocation = () => {
+    setLoading(true)
+
+    axios
+      .get(
+        `https://data.opendatasoft.com/api/records/1.0/search/?dataset=geonames-postal-code%40public-us&rows=1&sort=place_name&facet=country_code&facet=admin_name1&facet=place_name&facet=postal_code&refine.country_code=US&refine.postal_code=${values.zip}`
+      )
+      .then(response => {
+        setLoading(false)
+      })
+      .catch(error => {
+        setLoading(false)
+        console.error(error)
+      })
+  }
 
   useEffect(() => {
     setValues(user.locations[slot])
