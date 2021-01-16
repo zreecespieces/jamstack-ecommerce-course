@@ -59,10 +59,11 @@ export default function Details({
   setValues,
   slot,
   setSlot,
+  errors,
+  setErrors,
 }) {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
-  const [errors, setErrors] = useState({})
 
   useEffect(() => {
     setValues({ ...user.contactInfo[slot], password: "********" })
