@@ -44,6 +44,52 @@ export default function Confirmation({
 
   const handleConfirm = () => {
     setLoading(true)
+
+    axios
+      .post(process.env.GATSBY_STRAPI_URL + "/auth/local", {
+        identifier: user.email,
+        password: values.password,
+      })
+      .then(response => {
+        axios
+          .post(
+            process.env.GATSBY_STRAPI_URL +
+              "/users-permissions/change-password",
+            {
+              password: values.confirmation,
+            },
+            { headers: { Authorization: `Bearer ${user.jwt}` } }
+          )
+          .then(response => {
+            setLoading(false)
+            setDialogOpen(false)
+            dispatchFeedback(
+              setSnackbar({
+                status: "success",
+                message: "Password Changed Successfully",
+              })
+            )
+            setValues({ password: "", confirmation: "" })
+          })
+          .catch(error => {
+            setLoading(false)
+            console.error(error)
+            dispatchFeedback(
+              setSnackbar({
+                status: "error",
+                message:
+                  "There was a problem changing your password, please try again.",
+              })
+            )
+          })
+      })
+      .catch(error => {
+        setLoading(false)
+        console.error(error)
+        dispatchFeedback(
+          setSnackbar({ status: "error", message: "Old Password Invalid." })
+        )
+      })
   }
 
   return (
@@ -70,6 +116,7 @@ export default function Confirmation({
       <DialogActions>
         <Button
           onClick={() => setDialogOpen(false)}
+          disabled={loading}
           color="primary"
           classes={{ root: classes.button }}
         >
@@ -77,10 +124,11 @@ export default function Confirmation({
         </Button>
         <Button
           onClick={handleConfirm}
+          disabled={loading}
           color="secondary"
           classes={{ root: classes.button }}
         >
-          Yes, Change My Password
+          {loading ? <CircularProgress /> : "Yes, Change My Password"}
         </Button>
       </DialogActions>
     </Dialog>

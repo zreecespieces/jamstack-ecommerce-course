@@ -7,6 +7,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/change-password",
+      "handler": "User.changePassword",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }

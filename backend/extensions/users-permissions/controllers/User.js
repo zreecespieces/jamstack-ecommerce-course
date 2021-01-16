@@ -33,4 +33,16 @@ module.exports = {
 
     ctx.send(newUser, 200);
   },
+
+  async changePassword(ctx) {
+    const { id } = ctx.state.user;
+    const { password } = ctx.request.body;
+
+    await strapi.plugins["users-permissions"].services.user.edit(
+      { id },
+      { password }
+    );
+
+    ctx.send("Password Changed Successfully", 200);
+  },
 };
