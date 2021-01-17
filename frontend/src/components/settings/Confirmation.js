@@ -8,6 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "../auth/Fields"
@@ -34,6 +35,8 @@ export default function Confirmation({
   const [errors, setErrors] = useState({})
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
   const { password } = EmailPassword(false, false, visible, setVisible)
 
@@ -109,12 +112,16 @@ export default function Confirmation({
   return (
     <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
       <DialogTitle disableTypography>
-        <Typography variant="h3" classes={{ root: classes.title }}>
+        <Typography
+          align={matchesXS ? "center" : undefined}
+          variant="h3"
+          classes={{ root: classes.title }}
+        >
           Change Password
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText align={matchesXS ? "center" : undefined}>
           You are changing your account password. Please confirm old password
           and new password.
         </DialogContentText>

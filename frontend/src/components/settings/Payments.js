@@ -30,10 +30,17 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginBottom: "3rem",
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: "1rem",
+    },
   },
   paymentContainer: {
     borderLeft: "4px solid #fff",
     position: "relative",
+    [theme.breakpoints.down("md")]: {
+      height: "30rem",
+      borderLeft: 0,
+    },
   },
   slotContainer: {
     position: "absolute",
@@ -52,7 +59,8 @@ export default function Payments({ user }) {
       item
       container
       direction="column"
-      xs={6}
+      lg={6}
+      xs={12}
       alignItems="center"
       justify="center"
       classes={{ root: classes.paymentContainer }}
@@ -62,7 +70,11 @@ export default function Payments({ user }) {
       </Grid>
       <Grid item container justify="center">
         <Grid item>
-          <Typography variant="h3" classes={{ root: classes.number }}>
+          <Typography
+            align="center"
+            variant="h3"
+            classes={{ root: classes.number }}
+          >
             {card.last4
               ? `${card[0].brand.toUpperCase()} **** **** **** ${card[0].last4}`
               : "Add A New Card During Checkout"}

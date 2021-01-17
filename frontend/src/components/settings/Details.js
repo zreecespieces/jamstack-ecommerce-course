@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "../auth/Fields"
@@ -27,11 +28,21 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginBottom: "3rem",
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: "1rem",
+    },
   },
   fieldContainer: {
     marginBottom: "2rem",
     "& > :not(:first-child)": {
       marginLeft: "5rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: "1rem",
+      "& > :not(:first-child)": {
+        marginLeft: 0,
+        marginTop: "1rem",
+      },
     },
   },
   slotContainer: {
@@ -40,6 +51,10 @@ const useStyles = makeStyles(theme => ({
   },
   detailsContainer: {
     position: "relative",
+    [theme.breakpoints.down("md")]: {
+      borderBottom: "4px solid #fff",
+      height: "30rem",
+    },
   },
   "@global": {
     ".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before": {
@@ -64,6 +79,7 @@ export default function Details({
 }) {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
   useEffect(() => {
     setValues({ ...user.contactInfo[slot], password: "********" })
@@ -102,7 +118,8 @@ export default function Details({
       item
       container
       direction="column"
-      xs={6}
+      lg={6}
+      xs={12}
       alignItems="center"
       justify="center"
       classes={{ root: classes.detailsContainer }}
@@ -118,8 +135,10 @@ export default function Details({
         <Grid
           container
           justify="center"
+          alignItems={matchesXS ? "center" : undefined}
           key={i}
           classes={{ root: classes.fieldContainer }}
+          direction={matchesXS ? "column" : "row"}
         >
           <Fields
             fields={pair}
@@ -129,6 +148,7 @@ export default function Details({
             setErrors={setErrors}
             isWhite
             disabled={!edit}
+            settings
           />
         </Grid>
       ))}

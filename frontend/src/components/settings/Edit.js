@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
   },
   editContainer: {
     borderLeft: "4px solid #fff",
+    [theme.breakpoints.down("md")]: {
+      height: "30rem",
+      borderLeft: 0,
+    },
   },
 }))
 
@@ -105,7 +109,8 @@ export default function Edit({
     <Grid
       item
       container
-      xs={6}
+      lg={6}
+      xs={12}
       justify="space-evenly"
       alignItems="center"
       classes={{ root: classes.editContainer }}
