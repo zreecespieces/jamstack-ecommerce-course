@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 import { useSpring, useSprings, animated } from "react-spring"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import useResizeAware from "react-resize-aware"
 
 import Settings from "./Settings"
@@ -35,10 +36,26 @@ const useStyles = makeStyles(theme => ({
     borderBottom: ({ showComponent }) =>
       `${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
     margin: "5rem 0",
+    [theme.breakpoints.down("md")]: {
+      padding: "5rem 0",
+      "& > :not(:last-child)": {
+        marginBottom: ({ showComponent }) => (showComponent ? 0 : "5rem"),
+      },
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "2rem 0",
+      "& > :not(:last-child)": {
+        marginBottom: ({ showComponent }) => (showComponent ? 0 : "2rem"),
+      },
+    },
   },
   icon: {
     height: "12rem",
     width: "12rem",
+    [theme.breakpoints.down("lg")]: {
+      height: "10rem",
+      width: "10rem",
+    },
   },
   button: {
     backgroundColor: theme.palette.primary.main,
@@ -63,6 +80,18 @@ export default function SettingsPortal() {
   const [resizeListener, sizes] = useResizeAware()
   const [showComponent, setShowComponent] = useState(false)
   const classes = useStyles({ showComponent })
+  const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+
+  const buttonWidth = matchesXS
+    ? `${sizes.width - 64}`
+    : matchesMD
+    ? `${sizes.width - 160}px`
+    : matchesLG
+    ? "288px"
+    : "352px"
+  const buttonHeight = matchesMD ? "22rem" : matchesLG ? "18rem" : "22rem"
 
   const buttons = [
     { label: "Settings", icon: settingsIcon, component: Settings },
@@ -92,9 +121,9 @@ export default function SettingsPortal() {
         }
 
         const size = {
-          height: selectedSetting === button.label ? "60rem" : "22rem",
+          height: selectedSetting === button.label ? "60rem" : buttonHeight,
           width:
-            selectedSetting === button.label ? `${sizes.width}px` : "352px",
+            selectedSetting === button.label ? `${sizes.width}px` : buttonWidth,
           borderRadius: selectedSetting === button.label ? 0 : 25,
           delay: selectedSetting !== null ? 600 : 0,
         }
@@ -141,7 +170,11 @@ export default function SettingsPortal() {
         <img src={accountIcon} alt="settings page" />
       </Grid>
       <Grid item>
-        <Typography variant="h4" classes={{ root: classes.name }}>
+        <Typography
+          align="center"
+          variant="h4"
+          classes={{ root: classes.name }}
+        >
           Welcome back, {user.username}
         </Typography>
       </Grid>
@@ -158,6 +191,7 @@ export default function SettingsPortal() {
         classes={{ root: classes.dashboard }}
         alignItems="center"
         justify="space-around"
+        direction={matchesMD ? "column" : "row"}
       >
         {springs.map((prop, i) => {
           const button = buttons[i]
