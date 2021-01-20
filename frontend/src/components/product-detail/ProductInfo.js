@@ -291,7 +291,12 @@ export default function ProductInfo({
             </Grid>
           </Grid>
           <Grid item>
-            <QtyButton stock={stock} selectedVariant={selectedVariant} />
+            <QtyButton
+              name={name}
+              variants={variants}
+              stock={stock}
+              selectedVariant={selectedVariant}
+            />
           </Grid>
         </Grid>
       </Grid>

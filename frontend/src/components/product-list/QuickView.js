@@ -184,7 +184,12 @@ export default function QuickView({
                   colors={colors}
                 />
                 <span className={classes.qtyContainer}>
-                  <QtyButton stock={stock} selectedVariant={selectedVariant} />
+                  <QtyButton
+                    variants={product.node.variants}
+                    name={name}
+                    stock={stock}
+                    selectedVariant={selectedVariant}
+                  />
                 </span>
               </Grid>
             </Grid>

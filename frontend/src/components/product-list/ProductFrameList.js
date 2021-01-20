@@ -159,7 +159,12 @@ export default function ProductFrameList({
             setSelectedColor={setSelectedColor}
           />
         </Grid>
-        <QtyButton stock={stock} selectedVariant={selectedVariant} />
+        <QtyButton
+          variants={product.node.variants}
+          name={product.node.name.split(" ")[0]}
+          stock={stock}
+          selectedVariant={selectedVariant}
+        />
       </Grid>
     </Grid>
   )

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -6,6 +6,9 @@ import Button from "@material-ui/core/Button"
 import ButtonGroup from "@material-ui/core/ButtonGroup"
 import Badge from "@material-ui/core/Badge"
 import { makeStyles } from "@material-ui/core/styles"
+
+import { CartContext } from "../../contexts"
+import { addToCart } from "../../contexts/actions"
 
 import Cart from "../../images/Cart"
 
@@ -52,9 +55,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function QtyButton({ stock, selectedVariant }) {
+export default function QtyButton({ stock, variants, selectedVariant, name }) {
   const classes = useStyles()
   const [qty, setQty] = useState(1)
+  const { cart, dispatchCart } = useContext(CartContext)
 
   const handleChange = direction => {
     if (qty === stock[selectedVariant].qty && direction === "up") {
@@ -68,6 +72,17 @@ export default function QtyButton({ stock, selectedVariant }) {
     const newQty = direction === "up" ? qty + 1 : qty - 1
 
     setQty(newQty)
+  }
+
+  const handleCart = () => {
+    dispatchCart(
+      addToCart(
+        variants[selectedVariant],
+        qty,
+        name,
+        stock[selectedVariant].qty
+      )
+    )
   }
 
   useEffect(() => {
@@ -108,6 +123,7 @@ export default function QtyButton({ stock, selectedVariant }) {
           </Button>
         </ButtonGroup>
         <Button
+          onClick={handleCart}
           classes={{ root: clsx(classes.endButtons, classes.cartButton) }}
         >
           <Badge
