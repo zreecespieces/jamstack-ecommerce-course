@@ -8,13 +8,13 @@ import Badge from "@material-ui/core/Badge"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { CartContext } from "../../contexts"
-import { addToCart } from "../../contexts/actions"
+import { addToCart, removeFromCart } from "../../contexts/actions"
 
 import Cart from "../../images/Cart"
 
 const useStyles = makeStyles(theme => ({
   qtyText: {
-    color: "#fff",
+    color: ({ isCart }) => (isCart ? theme.palette.secondary.main : "#fff"),
   },
   mainGroup: {
     height: "3rem",
@@ -22,14 +22,17 @@ const useStyles = makeStyles(theme => ({
   editButtons: {
     height: "1.525rem",
     borderRadius: 0,
-    backgroundColor: theme.palette.secondary.main,
-    borderLeft: "2px solid #fff",
+    backgroundColor: ({ isCart }) =>
+      isCart ? "#fff" : theme.palette.secondary.main,
+    borderLeft: ({ isCart }) =>
+      `2px solid ${isCart ? theme.palette.secondary.main : "#fff"}`,
     borderRight: "2px solid #fff",
     borderBottom: "none",
     borderTop: "none",
   },
   endButtons: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: ({ isCart }) =>
+      isCart ? "#fff" : theme.palette.secondary.main,
     borderRadius: 50,
     border: "none",
   },
@@ -41,11 +44,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: "-0.25rem",
   },
   minusButton: {
-    borderTop: "2px solid #fff",
+    borderTop: ({ isCart }) =>
+      `2px solid ${isCart ? theme.palette.secondary.main : "#fff"}`,
   },
   qtyButton: {
     "&:hover": {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: ({ isCart }) =>
+        isCart ? "#fff" : theme.palette.secondary.main,
     },
   },
   badge: {
@@ -62,11 +67,20 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function QtyButton({ stock, variants, selectedVariant, name }) {
-  const classes = useStyles()
-  const [qty, setQty] = useState(1)
-  const [success, setSuccess] = useState(false)
+export default function QtyButton({
+  stock,
+  variants,
+  selectedVariant,
+  name,
+  isCart,
+}) {
   const { cart, dispatchCart } = useContext(CartContext)
+  const existingItem = cart.find(
+    item => item.variant === variants[selectedVariant]
+  )
+  const classes = useStyles({ isCart })
+  const [qty, setQty] = useState(isCart ? existingItem.qty : 1)
+  const [success, setSuccess] = useState(false)
 
   const handleChange = direction => {
     if (qty === stock[selectedVariant].qty && direction === "up") {
@@ -80,6 +94,14 @@ export default function QtyButton({ stock, variants, selectedVariant, name }) {
     const newQty = direction === "up" ? qty + 1 : qty - 1
 
     setQty(newQty)
+
+    if (isCart) {
+      if (direction === "up") {
+        dispatchCart(addToCart(variants[selectedVariant], 1, name))
+      } else if (direction === "down") {
+        dispatchCart(removeFromCart(variants[selectedVariant], 1))
+      }
+    }
   }
 
   const handleCart = () => {
@@ -142,28 +164,30 @@ export default function QtyButton({ stock, variants, selectedVariant, name }) {
             </Typography>
           </Button>
         </ButtonGroup>
-        <Button
-          onClick={handleCart}
-          classes={{
-            root: clsx(classes.endButtons, classes.cartButton, {
-              [classes.success]: success,
-            }),
-          }}
-        >
-          {success ? (
-            <Typography variant="h3" classes={{ root: classes.qtyText }}>
-              ✓
-            </Typography>
-          ) : (
-            <Badge
-              overlap="circle"
-              badgeContent="+"
-              classes={{ badge: classes.badge }}
-            >
-              <Cart color="#fff" />
-            </Badge>
-          )}
-        </Button>
+        {isCart ? null : (
+          <Button
+            onClick={handleCart}
+            classes={{
+              root: clsx(classes.endButtons, classes.cartButton, {
+                [classes.success]: success,
+              }),
+            }}
+          >
+            {success ? (
+              <Typography variant="h3" classes={{ root: classes.qtyText }}>
+                ✓
+              </Typography>
+            ) : (
+              <Badge
+                overlap="circle"
+                badgeContent="+"
+                classes={{ badge: classes.badge }}
+              >
+                <Cart color="#fff" />
+              </Badge>
+            )}
+          </Button>
+        )}
       </ButtonGroup>
     </Grid>
   )

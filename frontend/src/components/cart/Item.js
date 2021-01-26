@@ -81,6 +81,7 @@ export default function Item({ item }) {
               selectedVariant={0}
               variants={[item.variant]}
               stock={[{ qty: item.stock }]}
+              isCart
             />
           </Grid>
         </Grid>
