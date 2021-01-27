@@ -76,16 +76,23 @@ export default function Details({
   setSlot,
   errors,
   setErrors,
+  checkout,
 }) {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
   useEffect(() => {
-    setValues({ ...user.contactInfo[slot], password: "********" })
+    if (checkout) {
+      setValues(user.contactInfo[slot])
+    } else {
+      setValues({ ...user.contactInfo[slot], password: "********" })
+    }
   }, [slot])
 
   useEffect(() => {
+    if (checkout) return
+
     const changed = Object.keys(user.contactInfo[slot]).some(
       field => values[field] !== user.contactInfo[slot][field]
     )
@@ -111,7 +118,17 @@ export default function Details({
     },
   }
 
-  const fields = [name_phone, email_password]
+  let fields = [name_phone, email_password]
+
+  if (checkout) {
+    fields = [
+      {
+        name: name_phone.name,
+        email: email_password.email,
+        phone: name_phone.phone,
+      },
+    ]
+  }
 
   return (
     <Grid
@@ -147,7 +164,7 @@ export default function Details({
             errors={errors}
             setErrors={setErrors}
             isWhite
-            disabled={!edit}
+            disabled={checkout ? false : !edit}
             settings
           />
         </Grid>

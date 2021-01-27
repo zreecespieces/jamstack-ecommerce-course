@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 
 import CheckoutNavigation from "./CheckoutNavigation"
+import Details from "../settings/Details"
 
 const useStyles = makeStyles(theme => ({
   stepContainer: {
@@ -16,9 +17,30 @@ const useStyles = makeStyles(theme => ({
 export default function CheckoutPortal({ user }) {
   const classes = useStyles()
   const [selectedStep, setSelectedStep] = useState(0)
+  const [detailValues, setDetailValues] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  })
+  const [detailSlot, setDetailSlot] = useState(0)
+  const [errors, setErrors] = useState({})
 
   const steps = [
-    { title: "Contact Info" },
+    {
+      title: "Contact Info",
+      component: (
+        <Details
+          user={user}
+          values={detailValues}
+          setValues={setDetailValues}
+          slot={detailSlot}
+          setSlot={setDetailSlot}
+          errors={errors}
+          setErrors={setErrors}
+          checkout
+        />
+      ),
+    },
     { title: "Address" },
     { title: "Shipping" },
     { title: "Payment" },
@@ -39,7 +61,9 @@ export default function CheckoutPortal({ user }) {
         direction="column"
         alignItems="center"
         classes={{ root: classes.stepContainer }}
-      ></Grid>
+      >
+        {steps[selectedStep].component}
+      </Grid>
     </Grid>
   )
 }
