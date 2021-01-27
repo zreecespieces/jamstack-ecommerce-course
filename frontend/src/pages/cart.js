@@ -32,7 +32,7 @@ export default function Cart() {
         </Grid>
         <Grid item container>
           <CartItems />
-          <CheckoutPortal />
+          <CheckoutPortal user={user} />
         </Grid>
       </Grid>
     </Layout>
