@@ -23,6 +23,7 @@ export default function CheckoutPortal({ user }) {
     phone: "",
   })
   const [detailSlot, setDetailSlot] = useState(0)
+  const [detailBilling, setDetailBilling] = useState(false)
   const [errors, setErrors] = useState({})
 
   const steps = [
@@ -37,6 +38,8 @@ export default function CheckoutPortal({ user }) {
           setSlot={setDetailSlot}
           errors={errors}
           setErrors={setErrors}
+          billing={detailBilling}
+          setBilling={setDetailBilling}
           checkout
         />
       ),

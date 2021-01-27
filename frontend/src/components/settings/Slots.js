@@ -37,35 +37,49 @@ const useStyles = makeStyles(theme => ({
   selectedText: {
     color: "#fff",
   },
+  shipping: {
+    color: "#fff",
+    fontWeight: 600,
+    marginLeft: "0.5rem",
+  },
 }))
 
-export default function Slots({ slot, setSlot }) {
+export default function Slots({ slot, setSlot, checkout }) {
   const classes = useStyles()
 
   return (
-    <Grid item classes={{ root: classes.slotWrapper }}>
-      {[1, 2, 3].map(number => (
-        <Button
-          onClick={() => setSlot(number - 1)}
-          key={number}
-          classes={{
-            root: clsx(classes.slot, {
-              [classes.selected]: slot === number - 1,
-            }),
-          }}
-        >
-          <Typography
-            variant="h5"
+    <Grid item container xs={checkout ? 5 : undefined}>
+      <Grid item classes={{ root: classes.slotWrapper }}>
+        {[1, 2, 3].map(number => (
+          <Button
+            onClick={() => setSlot(number - 1)}
+            key={number}
             classes={{
-              root: clsx(classes.slotText, {
-                [classes.selectedText]: slot === number - 1,
+              root: clsx(classes.slot, {
+                [classes.selected]: slot === number - 1,
               }),
             }}
           >
-            {number}
+            <Typography
+              variant="h5"
+              classes={{
+                root: clsx(classes.slotText, {
+                  [classes.selectedText]: slot === number - 1,
+                }),
+              }}
+            >
+              {number}
+            </Typography>
+          </Button>
+        ))}
+      </Grid>
+      {checkout && (
+        <Grid item>
+          <Typography variant="body1" classes={{ root: classes.shipping }}>
+            Shipping
           </Typography>
-        </Button>
-      ))}
+        </Grid>
+      )}
     </Grid>
   )
 }
