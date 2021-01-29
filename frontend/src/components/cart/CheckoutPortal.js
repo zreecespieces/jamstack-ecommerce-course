@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import CheckoutNavigation from "./CheckoutNavigation"
 import Details from "../settings/Details"
 import Location from "../settings/Location"
+import Payments from "../settings/Payments"
 import Shipping from "./Shipping"
 
 const useStyles = makeStyles(theme => ({
@@ -43,6 +44,9 @@ export default function CheckoutPortal({ user }) {
   })
   const [locationSlot, setLocationSlot] = useState(0)
   const [locationBilling, setLocationBilling] = useState(false)
+
+  const [billingSlot, setBillingSlot] = useState(0)
+  const [saveCard, setSaveCard] = useState(false)
 
   const [errors, setErrors] = useState({})
 
@@ -98,7 +102,19 @@ export default function CheckoutPortal({ user }) {
         />
       ),
     },
-    { title: "Payment" },
+    {
+      title: "Payment",
+      component: (
+        <Payments
+          slot={billingSlot}
+          setSlot={setBillingSlot}
+          user={user}
+          saveCard={saveCard}
+          setSaveCard={setSaveCard}
+          checkout
+        />
+      ),
+    },
     { title: "Confirmation" },
     { title: `Thanks, ${user.username}!` },
   ]

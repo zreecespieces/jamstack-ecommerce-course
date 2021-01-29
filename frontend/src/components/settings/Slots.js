@@ -44,11 +44,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Slots({ slot, setSlot, checkout }) {
+export default function Slots({ slot, setSlot, checkout, noLabel }) {
   const classes = useStyles()
 
   return (
-    <Grid item container xs={checkout ? 5 : undefined}>
+    <Grid item container xs={noLabel ? 3 : checkout ? 5 : undefined}>
       <Grid item classes={{ root: classes.slotWrapper }}>
         {[1, 2, 3].map(number => (
           <Button

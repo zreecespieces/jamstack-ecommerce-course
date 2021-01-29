@@ -44,6 +44,8 @@ export default function Settings({ setSelectedSetting }) {
   const [locationSlot, setLocationSlot] = useState(0)
   const [locationErrors, setLocationErrors] = useState({})
 
+  const [billingSlot, setBillingSlot] = useState(0)
+
   const allErrors = { ...detailErrors, ...locationErrors }
   const isError = Object.keys(allErrors).some(
     error => allErrors[error] === true
@@ -71,7 +73,12 @@ export default function Settings({ setSelectedSetting }) {
           slot={detailSlot}
           setSlot={setDetailSlot}
         />
-        <Payments user={user} edit={edit} />
+        <Payments
+          user={user}
+          edit={edit}
+          slot={billingSlot}
+          setSlot={setBillingSlot}
+        />
       </Grid>
       <Grid
         container
