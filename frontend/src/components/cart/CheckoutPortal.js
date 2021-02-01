@@ -90,6 +90,8 @@ export default function CheckoutPortal({ user }) {
           setErrors={setErrors}
           billing={detailForBilling}
           setBilling={setDetailForBilling}
+          billingValues={billingDetails}
+          setBillingValues={setBillingDetails}
           checkout
         />
       ),
@@ -122,6 +124,8 @@ export default function CheckoutPortal({ user }) {
           setBilling={setLocationForBilling}
           errors={errors}
           setErrors={setErrors}
+          billingValues={billingLocation}
+          setBillingValues={setBillingLocation}
           checkout
         />
       ),
@@ -184,11 +188,11 @@ export default function CheckoutPortal({ user }) {
     { title: `Thanks, ${user.username}!` },
   ]
 
-  if (detailForBilling) {
+  if (detailForBilling !== false) {
     steps = steps.filter(step => step.title !== "Billing Info")
   }
 
-  if (locationForBilling) {
+  if (locationForBilling !== false) {
     steps = steps.filter(step => step.title !== "Billing Address")
   }
 
