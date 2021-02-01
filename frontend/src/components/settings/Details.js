@@ -95,12 +95,15 @@ export default function Details({
   checkout,
   billing,
   setBilling,
+  noSlots,
 }) {
   const classes = useStyles({ checkout })
   const [visible, setVisible] = useState(false)
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
   useEffect(() => {
+    if (noSlots) return
+
     if (checkout) {
       setValues(user.contactInfo[slot])
     } else {
@@ -192,33 +195,35 @@ export default function Details({
           />
         </Grid>
       ))}
-      <Grid
-        item
-        container
-        justify={checkout ? "space-between" : undefined}
-        classes={{ root: classes.slotContainer }}
-      >
-        <Slots slot={slot} setSlot={setSlot} checkout={checkout} />
-        {checkout && (
-          <Grid item>
-            <FormControlLabel
-              classes={{
-                root: classes.switchWrapper,
-                label: classes.switchLabel,
-              }}
-              label="Billing"
-              labelPlacement="start"
-              control={
-                <Switch
-                  checked={billing}
-                  onChange={() => setBilling(!billing)}
-                  color="secondary"
-                />
-              }
-            />
-          </Grid>
-        )}
-      </Grid>
+      {noSlots ? null : (
+        <Grid
+          item
+          container
+          justify={checkout ? "space-between" : undefined}
+          classes={{ root: classes.slotContainer }}
+        >
+          <Slots slot={slot} setSlot={setSlot} checkout={checkout} />
+          {checkout && (
+            <Grid item>
+              <FormControlLabel
+                classes={{
+                  root: classes.switchWrapper,
+                  label: classes.switchLabel,
+                }}
+                label="Billing"
+                labelPlacement="start"
+                control={
+                  <Switch
+                    checked={billing}
+                    onChange={() => setBilling(!billing)}
+                    color="secondary"
+                  />
+                }
+              />
+            </Grid>
+          )}
+        </Grid>
+      )}
     </Grid>
   )
 }
