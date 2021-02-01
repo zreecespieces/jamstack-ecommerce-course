@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import Button from "@material-ui/core/Button"
+import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "../auth/Fields"
@@ -63,6 +65,27 @@ const useStyles = makeStyles(theme => ({
   },
   fieldWrapper: {
     marginLeft: "1.25rem",
+  },
+  button: {
+    width: "100%",
+    height: "7rem",
+    borderRadius: 0,
+    backgroundColor: theme.palette.secondary.main,
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  },
+  buttonWrapper: {
+    marginTop: "auto",
+  },
+  mainContainer: {
+    height: "100%",
+  },
+  chipRoot: {
+    backgroundColor: "#fff",
+  },
+  chipLabel: {
+    color: theme.palette.secondary.main,
   },
 }))
 
@@ -151,7 +174,12 @@ export default function Confirmation() {
   )
 
   return (
-    <Grid item container direction="column">
+    <Grid
+      item
+      container
+      direction="column"
+      classes={{ root: classes.mainContainer }}
+    >
       <Grid item container>
         <Grid item container direction="column" xs={7}>
           {firstFields.map((field, i) => (
@@ -218,6 +246,21 @@ export default function Confirmation() {
           </Grid>
         </Grid>
       ))}
+      <Grid item classes={{ root: classes.buttonWrapper }}>
+        <Button classes={{ root: classes.button }}>
+          <Grid container justify="space-around" alignItems="center">
+            <Grid item>
+              <Typography variant="h5">PLACE ORDER</Typography>
+            </Grid>
+            <Grid item>
+              <Chip
+                label="$149.99"
+                classes={{ root: classes.chipRoot, label: classes.chipLabel }}
+              />
+            </Grid>
+          </Grid>
+        </Button>
+      </Grid>
     </Grid>
   )
 }
