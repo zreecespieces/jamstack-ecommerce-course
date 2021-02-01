@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     visibility: ({ steps, selectedStep }) =>
       selectedStep >= steps.length - 2 ? "hidden" : "visible",
   },
+  disabled: {
+    opacity: 0.5,
+  },
 }))
 
 export default function CheckoutNavigation({
@@ -48,7 +51,11 @@ export default function CheckoutNavigation({
         </Typography>
       </Grid>
       <Grid item classes={{ root: classes.forward }}>
-        <Button onClick={() => setSelectedStep(selectedStep + 1)}>
+        <Button
+          disabled={steps[selectedStep].error}
+          classes={{ disabled: classes.disabled }}
+          onClick={() => setSelectedStep(selectedStep + 1)}
+        >
           <Typography variant="h5">{">"}</Typography>
         </Button>
       </Grid>

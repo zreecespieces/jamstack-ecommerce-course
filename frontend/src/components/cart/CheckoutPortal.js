@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
@@ -9,6 +9,7 @@ import Location from "../settings/Location"
 import Payments from "../settings/Payments"
 import Shipping from "./Shipping"
 import Confirmation from "./Confirmation"
+import validate from "../ui/validate"
 
 const useStyles = makeStyles(theme => ({
   stepContainer: {
@@ -58,6 +59,12 @@ export default function CheckoutPortal({ user }) {
     { label: "OVERNIGHT SHIPPING", price: 29.99 },
   ]
 
+  const errorHelper = values => {
+    const valid = validate(values)
+
+    return Object.keys(valid).some(value => !valid[value])
+  }
+
   const steps = [
     {
       title: "Contact Info",
@@ -75,6 +82,7 @@ export default function CheckoutPortal({ user }) {
           checkout
         />
       ),
+      error: errorHelper(detailValues),
     },
     {
       title: "Address",
@@ -92,6 +100,7 @@ export default function CheckoutPortal({ user }) {
           checkout
         />
       ),
+      error: errorHelper(locationValues),
     },
     {
       title: "Shipping",
@@ -102,6 +111,7 @@ export default function CheckoutPortal({ user }) {
           setSelectedShipping={setSelectedShipping}
         />
       ),
+      error: selectedShipping === null,
     },
     {
       title: "Payment",
@@ -115,10 +125,15 @@ export default function CheckoutPortal({ user }) {
           checkout
         />
       ),
+      error: false,
     },
     { title: "Confirmation", component: <Confirmation /> },
     { title: `Thanks, ${user.username}!` },
   ]
+
+  useEffect(() => {
+    setErrors({})
+  }, [detailSlot, locationSlot])
 
   return (
     <Grid item container direction="column" alignItems="flex-end" xs={6}>
