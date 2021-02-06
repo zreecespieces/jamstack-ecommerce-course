@@ -126,7 +126,10 @@ export default function Details({
   }, [values])
 
   useEffect(() => {
-    if (noSlots) return
+    if (noSlots) {
+      isMounted.current = false
+      return
+    }
 
     if (isMounted.current === false) {
       isMounted.current = true
