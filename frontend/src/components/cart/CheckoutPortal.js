@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 
 import CheckoutNavigation from "./CheckoutNavigation"
+import BillingConfirmation from "./BillingConfirmation"
 import Details from "../settings/Details"
 import Location from "../settings/Location"
 import Payments from "../settings/Payments"
@@ -245,6 +246,16 @@ export default function CheckoutPortal({ user }) {
       >
         {steps[selectedStep].component}
       </Grid>
+      {steps[selectedStep].title === "Confirmation" && (
+        <BillingConfirmation
+          detailForBilling={detailForBilling}
+          billingDetails={billingDetails}
+          detailSlot={detailSlot}
+          locationForBilling={locationForBilling}
+          billingLocation={billingLocation}
+          locationSlot={locationSlot}
+        />
+      )}
     </Grid>
   )
 }
