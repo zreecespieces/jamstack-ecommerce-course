@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "name": "Order"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "status": {
+      "type": "string",
+      "default": "placed"
+    },
+    "items": {
+      "type": "json",
+      "required": true
+    },
+    "shippingAddress": {
+      "type": "json",
+      "required": true
+    },
+    "billingAddress": {
+      "type": "json",
+      "required": true
+    },
+    "shippingInfo": {
+      "type": "json",
+      "required": true
+    },
+    "billingInfo": {
+      "type": "json",
+      "required": true
+    },
+    "shippingOption": {
+      "type": "json",
+      "required": true
+    },
+    "subtotal": {
+      "type": "decimal",
+      "required": true
+    },
+    "tax": {
+      "type": "decimal",
+      "required": true
+    },
+    "total": {
+      "type": "decimal",
+      "required": true
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "orders"
+    }
+  }
+}
