@@ -115,6 +115,7 @@ export default function CheckoutPortal({ user }) {
           checkout
         />
       ),
+      hasActions: true,
       error: errorHelper(
         detailValues,
         detailForBilling,
@@ -154,6 +155,7 @@ export default function CheckoutPortal({ user }) {
           checkout
         />
       ),
+      hasActions: true,
       error: errorHelper(
         locationValues,
         locationForBilling,
