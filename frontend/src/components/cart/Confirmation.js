@@ -10,7 +10,8 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "../auth/Fields"
 
-import { CartContext } from "../../contexts"
+import { CartContext, FeedbackContext } from "../../contexts"
+import { setSnackbar } from "../../contexts/actions"
 
 import confirmationIcon from "../../images/tag.svg"
 import NameAdornment from "../../images/NameAdornment"
@@ -91,6 +92,14 @@ const useStyles = makeStyles(theme => ({
   chipLabel: {
     color: theme.palette.secondary.main,
   },
+  disabled: {
+    backgroundColor: theme.palette.grey[500],
+  },
+  "@global": {
+    ".MuiSnackbarContent-message": {
+      whiteSpace: "pre-wrap",
+    },
+  },
 }))
 
 export default function Confirmation({
@@ -107,6 +116,7 @@ export default function Confirmation({
   const classes = useStyles()
   const [loading, setLoading] = useState(false)
   const { cart } = useContext(CartContext)
+  const { dispatchFeedback } = useContext(FeedbackContext)
 
   const [promo, setPromo] = useState({ promo: "" })
   const [promoError, setPromoError] = useState({})
@@ -237,6 +247,34 @@ export default function Confirmation({
       .catch(error => {
         setLoading(false)
         console.error(error)
+
+        switch (error.response.status) {
+          case 400:
+            dispatchFeedback(
+              setSnackbar({ status: "error", message: "Invalid Cart" })
+            )
+            break
+          case 409:
+            dispatchFeedback(
+              setSnackbar({
+                status: "error",
+                message:
+                  `The following items are not available at the requested quantity. Please update your cart and try again.\n` +
+                  `${error.response.data.unavailable.map(
+                    item => `\nItem: ${item.id}, Available: ${item.qty}`
+                  )}`,
+              })
+            )
+            break
+          default:
+            dispatchFeedback(
+              setSnackbar({
+                status: "error",
+                message:
+                  "Something went wrong, please refresh the page and try again. You have NOT been charged.",
+              })
+            )
+        }
       })
   }
 
@@ -314,7 +352,11 @@ export default function Confirmation({
         </Grid>
       ))}
       <Grid item classes={{ root: classes.buttonWrapper }}>
-        <Button classes={{ root: classes.button }} onClick={handleOrder}>
+        <Button
+          classes={{ root: classes.button, disabled: classes.disabled }}
+          onClick={handleOrder}
+          disabled={cart.length === 0 || loading}
+        >
           <Grid container justify="space-around" alignItems="center">
             <Grid item>
               <Typography variant="h5">PLACE ORDER</Typography>
