@@ -215,6 +215,8 @@ export default function CheckoutPortal({ user }) {
           locationForBilling={locationForBilling}
           shippingOptions={shippingOptions}
           selectedShipping={selectedShipping}
+          selectedStep={selectedStep}
+          setSelectedStep={setSelectedStep}
         />
       ),
     },
