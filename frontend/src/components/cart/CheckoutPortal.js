@@ -10,6 +10,7 @@ import Location from "../settings/Location"
 import Payments from "../settings/Payments"
 import Shipping from "./Shipping"
 import Confirmation from "./Confirmation"
+import ThankYou from "./ThankYou"
 import validate from "../ui/validate"
 
 const useStyles = makeStyles(theme => ({
@@ -63,6 +64,8 @@ export default function CheckoutPortal({ user }) {
   const [saveCard, setSaveCard] = useState(false)
 
   const [errors, setErrors] = useState({})
+
+  const [order, setOrder] = useState(null)
 
   const [selectedShipping, setSelectedShipping] = useState(null)
   const shippingOptions = [
@@ -207,6 +210,7 @@ export default function CheckoutPortal({ user }) {
       component: (
         <Confirmation
           user={user}
+          setOrder={setOrder}
           detailValues={detailValues}
           billingDetails={billingDetails}
           detailForBilling={detailForBilling}
@@ -220,7 +224,10 @@ export default function CheckoutPortal({ user }) {
         />
       ),
     },
-    { title: `Thanks, ${user.username}!` },
+    {
+      title: `Thanks, ${user.username.split(" ")[0]}!`,
+      component: <ThankYou order={order} selectedShipping={selectedShipping} />,
+    },
   ]
 
   if (detailForBilling !== false) {
