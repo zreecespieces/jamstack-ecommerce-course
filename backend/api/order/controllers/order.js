@@ -41,13 +41,13 @@ module.exports = {
         if (serverItem.qty < clientItem.qty) {
           unavailable.push({ id: serverItem.id, qty: serverItem.qty });
         } else {
-          serverTotal += serverItem.price * clientItem.qty;
-
           await strapi.services.variant.update(
             { id: clientItem.variant.id },
             { qty: serverItem.qty - clientItem.qty }
           );
         }
+
+        serverTotal += serverItem.price * clientItem.qty;
       })
     );
 

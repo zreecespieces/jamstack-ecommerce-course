@@ -206,6 +206,7 @@ export default function CheckoutPortal({ user }) {
       title: "Confirmation",
       component: (
         <Confirmation
+          user={user}
           detailValues={detailValues}
           billingDetails={billingDetails}
           detailForBilling={detailForBilling}
