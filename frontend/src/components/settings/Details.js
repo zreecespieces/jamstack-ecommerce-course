@@ -71,6 +71,9 @@ const useStyles = makeStyles(theme => ({
   switchLabel: {
     color: "#fff",
     fontWeight: 600,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1rem",
+    },
   },
   "@global": {
     ".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before": {

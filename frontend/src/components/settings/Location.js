@@ -44,6 +44,9 @@ const useStyles = makeStyles(theme => ({
   switchLabel: {
     color: "#fff",
     fontWeight: 600,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1rem",
+    },
   },
   locationContainer: {
     position: "relative",
