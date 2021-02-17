@@ -76,6 +76,7 @@ export default function CheckoutPortal({ user }) {
   const [locationForBilling, setLocationForBilling] = useState(false)
 
   const [billingSlot, setBillingSlot] = useState(0)
+  const [cardError, setCardError] = useState(true)
   const [saveCard, setSaveCard] = useState(false)
 
   const [errors, setErrors] = useState({})
@@ -215,10 +216,11 @@ export default function CheckoutPortal({ user }) {
           user={user}
           saveCard={saveCard}
           setSaveCard={setSaveCard}
+          setCardError={setCardError}
           checkout
         />
       ),
-      error: false,
+      error: cardError,
     },
     {
       title: "Confirmation",

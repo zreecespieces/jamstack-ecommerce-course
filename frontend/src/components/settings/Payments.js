@@ -58,6 +58,9 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     width: "75%",
+    borderBottom: "2px solid #fff",
+    height: "2rem",
+    marginTop: "-1rem",
   },
 }))
 
@@ -68,6 +71,7 @@ export default function Payments({
   checkout,
   saveCard,
   setSaveCard,
+  setCardError,
 }) {
   const classes = useStyles({ checkout })
   const stripe = useStripe()
@@ -86,15 +90,30 @@ export default function Payments({
 
   const handleCardChange = async event => {
     if (event.complete) {
-      console.log("VALID")
+      setCardError(false)
     } else {
-      console.log("INVALID")
+      setCardError(true)
     }
   }
 
   const cardWrapper = (
     <form onSubmit={handleSubmit} className={classes.form}>
-      <CardElement onChange={handleCardChange} />
+      <CardElement
+        options={{
+          style: {
+            base: {
+              fontSize: "20px",
+              fontFamily: "Montserrat",
+              color: "#fff",
+              iconColor: "#fff",
+              "::placeholder": {
+                color: "#fff",
+              },
+            },
+          },
+        }}
+        onChange={handleCardChange}
+      />
     </form>
   )
 
