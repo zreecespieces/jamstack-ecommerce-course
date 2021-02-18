@@ -30,7 +30,8 @@
     "react-lottie": "^1.2.3",
     "react-resize-aware": "^3.1.0",
     "react-spring": "^9.0.0-rc.3",
-    "react-spring-3d-carousel": "^1.2.0"
+    "react-spring-3d-carousel": "^1.2.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "prettier": "2.1.1"
