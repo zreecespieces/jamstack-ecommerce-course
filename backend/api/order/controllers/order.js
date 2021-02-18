@@ -5,7 +5,7 @@
  * to customize this controller
  */
 const { sanitizeEntity } = require("strapi-utils");
-const GUEST_ID = "602374335406731dcb566555";
+const GUEST_ID = "6028c24d9a75c1b684043d83";
 
 module.exports = {
   async place(ctx) {

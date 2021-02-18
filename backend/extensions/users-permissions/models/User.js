@@ -1,7 +1,16 @@
+var stripe = require("stripe")(process.env.STRIPE_SK);
+
 module.exports = {
   lifecycles: {
     // Called before an entry is created
-    beforeCreate(data) {
+    async beforeCreate(data) {
+      const customer = await stripe.customers.create({
+        name: data.username,
+        email: data.email,
+      });
+
+      data.stripeID = customer.id;
+
       data.paymentMethods = [
         { brand: "", last4: "" },
         { brand: "", last4: "" },
