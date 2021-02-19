@@ -274,34 +274,6 @@ export default function Confirmation({
       .catch(error => {
         setLoading(false)
         console.error(error)
-
-        switch (error.response.status) {
-          case 400:
-            dispatchFeedback(
-              setSnackbar({ status: "error", message: "Invalid Cart" })
-            )
-            break
-          case 409:
-            dispatchFeedback(
-              setSnackbar({
-                status: "error",
-                message:
-                  `The following items are not available at the requested quantity. Please update your cart and try again.\n` +
-                  `${error.response.data.unavailable.map(
-                    item => `\nItem: ${item.id}, Available: ${item.qty}`
-                  )}`,
-              })
-            )
-            break
-          default:
-            dispatchFeedback(
-              setSnackbar({
-                status: "error",
-                message:
-                  "Something went wrong, please refresh the page and try again. You have NOT been charged.",
-              })
-            )
-        }
       })
   }
 
@@ -312,24 +284,62 @@ export default function Confirmation({
 
       setClientSecret(null)
 
-      axios.post(
-        process.env.GATSBY_STRAPI_URL + "/orders/process",
-        {
-          items: cart,
-          total: total.toFixed(2),
-          shippingOption: shipping,
-          idempotencyKey,
-          storedIntent,
-          email: detailValues.email,
-        },
-        {
-          headers: user.jwt
-            ? { Authorization: `Bearer ${user.jwt}` }
-            : undefined,
-        }
-      )
+      axios
+        .post(
+          process.env.GATSBY_STRAPI_URL + "/orders/process",
+          {
+            items: cart,
+            total: total.toFixed(2),
+            shippingOption: shipping,
+            idempotencyKey,
+            storedIntent,
+            email: detailValues.email,
+          },
+          {
+            headers: user.jwt
+              ? { Authorization: `Bearer ${user.jwt}` }
+              : undefined,
+          }
+        )
+        .then(response => {
+          setClientSecret(response.data.client_secret)
+          localStorage.setItem("intentID", response.data.intentID)
+        })
+        .catch(error => {
+          console.error(error)
+
+          switch (error.response.status) {
+            case 400:
+              dispatchFeedback(
+                setSnackbar({ status: "error", message: "Invalid Cart" })
+              )
+              break
+            case 409:
+              dispatchFeedback(
+                setSnackbar({
+                  status: "error",
+                  message:
+                    `The following items are not available at the requested quantity. Please update your cart and try again.\n` +
+                    `${error.response.data.unavailable.map(
+                      item => `\nItem: ${item.id}, Available: ${item.qty}`
+                    )}`,
+                })
+              )
+              break
+            default:
+              dispatchFeedback(
+                setSnackbar({
+                  status: "error",
+                  message:
+                    "Something went wrong, please refresh the page and try again. You have NOT been charged.",
+                })
+              )
+          }
+        })
     }
   }, [cart])
+
+  console.log("CLIENT SECRET", clientSecret)
 
   return (
     <Grid
@@ -409,7 +419,7 @@ export default function Confirmation({
         <Button
           classes={{ root: classes.button, disabled: classes.disabled }}
           onClick={handleOrder}
-          disabled={cart.length === 0 || loading}
+          disabled={cart.length === 0 || loading || !clientSecret}
         >
           <Grid container justify="space-around" alignItems="center">
             <Grid item>
