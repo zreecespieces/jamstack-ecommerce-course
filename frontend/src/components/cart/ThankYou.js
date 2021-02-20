@@ -104,7 +104,7 @@ export default function ThankYou({
         >
           <Grid item>
             <Typography variant="body2" classes={{ root: classes.order }}>
-              Order #{order.id.slice(order.id.length - 10, order.id.length)}
+              Order #{order?.id.slice(order.id.length - 10, order.id.length)}
             </Typography>
           </Grid>
           <Grid item>

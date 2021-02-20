@@ -218,7 +218,7 @@ export default function Confirmation({
     },
     {
       label: "SHIPPING",
-      value: shipping.price.toFixed(2),
+      value: shipping?.price.toFixed(2),
     },
     {
       label: "TAX",
@@ -318,7 +318,7 @@ export default function Confirmation({
   }
 
   useEffect(() => {
-    if (!order && cart.length !== 0) {
+    if (!order && cart.length !== 0 && selectedStep === stepNumber) {
       const storedIntent = localStorage.getItem("intentID")
       const idempotencyKey = uuidv4()
 
@@ -377,7 +377,7 @@ export default function Confirmation({
           }
         })
     }
-  }, [cart])
+  }, [cart, selectedStep, stepNumber])
 
   console.log("CLIENT SECRET", clientSecret)
 
@@ -395,7 +395,7 @@ export default function Confirmation({
               item
               container
               alignItems="center"
-              key={field.value}
+              key={i}
               classes={{
                 root: clsx(classes.fieldRow, {
                   [classes.darkBackground]: i % 2 !== 0,
