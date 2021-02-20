@@ -13,8 +13,8 @@ import { v4 as uuidv4 } from "uuid"
 
 import Fields from "../auth/Fields"
 
-import { CartContext, FeedbackContext } from "../../contexts"
-import { setSnackbar, clearCart } from "../../contexts/actions"
+import { CartContext, FeedbackContext, UserContext } from "../../contexts"
+import { setSnackbar, clearCart, setUser } from "../../contexts/actions"
 
 import confirmationIcon from "../../images/tag.svg"
 import NameAdornment from "../../images/NameAdornment"
@@ -123,6 +123,7 @@ const useStyles = makeStyles(theme => ({
 export default function Confirmation({
   user,
   order,
+  saveCard,
   detailValues,
   billingDetails,
   detailsForBilling,
@@ -135,6 +136,8 @@ export default function Confirmation({
   setSelectedStep,
   stepNumber,
   setOrder,
+  card,
+  cardSlot,
 }) {
   const classes = useStyles({ stepNumber, selectedStep })
   const stripe = useStripe()
@@ -145,6 +148,7 @@ export default function Confirmation({
   const [clientSecret, setClientSecret] = useState(null)
   const { cart, dispatchCart } = useContext(CartContext)
   const { dispatchFeedback } = useContext(FeedbackContext)
+  const { dispatchUser } = useContext(UserContext)
 
   const [promo, setPromo] = useState({ promo: "" })
   const [promoError, setPromoError] = useState({})
@@ -197,7 +201,7 @@ export default function Confirmation({
       adornment: <img src={zipAdornment} alt="city, state, zip code" />,
     },
     {
-      value: "**** **** **** 1234",
+      value: `${card.brand.toUpperCase()} ${card.last4}`,
       adornment: (
         <img src={cardAdornment} alt="credit card" className={classes.card} />
       ),
@@ -267,6 +271,7 @@ export default function Confirmation({
             phone: billingDetails.phone,
           },
         },
+        setup_future_usage: saveCard ? "off_session" : undefined,
       },
       { idempotencyKey }
     )
@@ -292,6 +297,9 @@ export default function Confirmation({
             total: total.toFixed(2),
             items: cart,
             transaction: result.paymentIntent.id,
+            paymentMethod: card,
+            saveCard,
+            cardSlot,
           },
           {
             headers:
@@ -301,6 +309,12 @@ export default function Confirmation({
           }
         )
         .then(response => {
+          if (saveCard) {
+            let newUser = { ...user }
+            newUser.paymentMethods[cardSlot] = card
+            dispatchUser(setUser(newUser))
+          }
+
           setLoading(false)
           dispatchCart(clearCart())
 
@@ -391,8 +405,6 @@ export default function Confirmation({
         })
     }
   }, [cart, selectedStep, stepNumber])
-
-  console.log("CLIENT SECRET", clientSecret)
 
   return (
     <Grid
