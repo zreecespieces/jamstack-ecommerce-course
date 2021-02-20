@@ -63,8 +63,8 @@
       "type": "json"
     },
     "orders": {
-      "collection": "order",
-      "via": "user"
+      "via": "user",
+      "collection": "order"
     },
     "stripeID": {
       "type": "string"

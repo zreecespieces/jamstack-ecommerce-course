@@ -50,9 +50,13 @@
       "required": true
     },
     "user": {
-      "via": "orders",
       "plugin": "users-permissions",
-      "model": "user"
+      "model": "user",
+      "via": "orders"
+    },
+    "transaction": {
+      "type": "string",
+      "required": true
     }
   }
 }

@@ -17,6 +17,14 @@
       }
     },
     {
+      "method": "POST",
+      "path": "/orders/finalize",
+      "handler": "order.finalize",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "GET",
       "path": "/orders/count",
       "handler": "order.count",
