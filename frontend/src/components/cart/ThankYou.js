@@ -35,6 +35,8 @@ const useStyles = makeStyles(theme => ({
   container: {
     height: "100%",
     position: "relative",
+    display: ({ selectedStep, stepNumber }) =>
+      selectedStep !== stepNumber ? "none" : "flex",
   },
   shopWrapper: {
     position: "absolute",
@@ -46,8 +48,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function ThankYou({ selectedShipping, order }) {
-  const classes = useStyles()
+export default function ThankYou({
+  selectedShipping,
+  order,
+  selectedStep,
+  stepNumber,
+}) {
+  const classes = useStyles({ selectedStep, stepNumber })
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
   const addToDate = days => {

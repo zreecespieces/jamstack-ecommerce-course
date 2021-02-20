@@ -101,6 +101,8 @@ const useStyles = makeStyles(theme => ({
   },
   mainContainer: {
     height: "100%",
+    display: ({ selectedStep, stepNumber }) =>
+      selectedStep !== stepNumber ? "none" : "flex",
   },
   chipRoot: {
     backgroundColor: "#fff",
@@ -131,9 +133,10 @@ export default function Confirmation({
   selectedShipping,
   selectedStep,
   setSelectedStep,
+  stepNumber,
   setOrder,
 }) {
-  const classes = useStyles()
+  const classes = useStyles({ stepNumber, selectedStep })
   const stripe = useStripe()
   const elements = useElements()
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
