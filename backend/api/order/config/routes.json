@@ -25,6 +25,14 @@
       }
     },
     {
+      "method": "POST",
+      "path": "/orders/removeCard",
+      "handler": "order.removeCard",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "GET",
       "path": "/orders/count",
       "handler": "order.count",
