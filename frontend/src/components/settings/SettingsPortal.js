@@ -9,6 +9,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import useResizeAware from "react-resize-aware"
 
 import Settings from "./Settings"
+import OrderHistory from "./OrderHistory"
 import { UserContext } from "../../contexts"
 import { setUser } from "../../contexts/actions"
 
@@ -95,7 +96,7 @@ export default function SettingsPortal() {
 
   const buttons = [
     { label: "Settings", icon: settingsIcon, component: Settings },
-    { label: "Order History", icon: orderHistoryIcon },
+    { label: "Order History", icon: orderHistoryIcon, component: OrderHistory },
     { label: "Favorites", icon: favoritesIcon },
     { label: "Subscriptions", icon: subscriptionIcon },
   ]

@@ -9,6 +9,14 @@
       }
     },
     {
+      "method": "GET",
+      "path": "/orders/history",
+      "handler": "order.history",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "POST",
       "path": "/orders/process",
       "handler": "order.process",
