@@ -161,7 +161,7 @@ export default function OrderHistory({ setSelectedSetting }) {
         columns={columns}
         pageSize={5}
       />
-      <OrderDetails open={open} setOpen={setOpen} />
+      <OrderDetails open={open} setOpen={setOpen} orders={orders} />
     </Grid>
   )
 }
