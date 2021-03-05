@@ -7,7 +7,10 @@ import Typography from "@material-ui/core/Typography"
 import { DataGrid } from "@material-ui/data-grid"
 import { makeStyles } from "@material-ui/core/styles"
 
+import OrderDetails from "./OrderDetails"
+
 import BackwardsIcon from "../../images/BackwardsOutline"
+import detailsIcon from "../../images/details.svg"
 
 import { UserContext } from "../../contexts"
 
@@ -78,6 +81,7 @@ const useStyles = makeStyles(theme => ({
 export default function OrderHistory({ setSelectedSetting }) {
   const classes = useStyles()
   const [orders, setOrders] = useState([])
+  const [open, setOpen] = useState(null)
   const { user } = useContext(UserContext)
 
   useEffect(() => {
@@ -127,7 +131,16 @@ export default function OrderHistory({ setSelectedSetting }) {
         <Chip label={`$${value}`} classes={{ label: classes.chipLabel }} />
       ),
     },
-    { field: "", flex: 1.5, sortable: false },
+    {
+      field: "",
+      flex: 1.5,
+      sortable: false,
+      renderCell: () => (
+        <IconButton>
+          <img src={detailsIcon} alt="order details" />
+        </IconButton>
+      ),
+    },
   ]
 
   const rows = createData(orders)
@@ -141,7 +154,14 @@ export default function OrderHistory({ setSelectedSetting }) {
           </div>
         </IconButton>
       </Grid>
-      <DataGrid rows={rows} columns={columns} pageSize={5} />
+      <DataGrid
+        hideFooterSelectedRowCount
+        onRowClick={event => setOpen(event.row.id)}
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+      />
+      <OrderDetails open={open} setOpen={setOpen} />
     </Grid>
   )
 }
