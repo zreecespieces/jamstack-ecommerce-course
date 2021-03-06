@@ -1,4 +1,5 @@
 import React from "react"
+import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Chip from "@material-ui/core/Chip"
 import Typography from "@material-ui/core/Typography"
@@ -14,6 +15,8 @@ const useStyles = makeStyles(theme => ({
   id: {
     fontSize: "2.5rem",
     fontWeight: 600,
+    marginTop: "1rem",
+    marginLeft: "1rem",
   },
   bold: {
     fontWeight: 600,
@@ -21,6 +24,19 @@ const useStyles = makeStyles(theme => ({
   date: {
     fontWeight: 600,
     marginLeft: "1rem",
+    marginBottom: "1rem",
+  },
+  padding: {
+    padding: "1rem",
+  },
+  status: {
+    marginLeft: "1rem",
+  },
+  dark: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+  chipRoot: {
+    backgroundColor: theme.palette.primary.main,
   },
 }))
 
@@ -42,21 +58,20 @@ export default function OrderDetails({ orders, open, setOpen }) {
       disableDiscovery={iOS}
     >
       <Grid container direction="column">
-        <Grid item>
-          <Typography
-            align="center"
-            variant="h2"
-            classes={{ root: classes.id }}
-          >
+        <Grid item classes={{ root: classes.dark }}>
+          <Typography variant="h2" classes={{ root: classes.id }}>
             Order #
             {order?.id
               .slice(order.id.length - 10, order.id.length)
               .toUpperCase()}
           </Typography>
         </Grid>
-        <Grid item container>
-          <Grid item>
-            <Chip label={order?.status} classes={{ label: classes.bold }} />
+        <Grid item container classes={{ root: classes.dark }}>
+          <Grid item classes={{ root: classes.status }}>
+            <Chip
+              label={order?.status}
+              classes={{ label: classes.bold, root: classes.chipRoot }}
+            />
           </Grid>
           <Grid item>
             <Typography variant="body2" classes={{ root: classes.date }}>
@@ -65,6 +80,42 @@ export default function OrderDetails({ orders, open, setOpen }) {
               }/${order?.createdAt.split("-")[0]}`}
             </Typography>
           </Grid>
+        </Grid>
+        <Grid item classes={{ root: classes.padding }}>
+          <Typography variant="body2" classes={{ root: classes.bold }}>
+            Billing
+          </Typography>
+          <Typography variant="body2">
+            {order?.billingInfo.name}
+            <br />
+            {order?.billingInfo.email}
+            <br />
+            {order?.billingInfo.phone}
+            <br />
+            <br />
+            {order?.billingAddress.street}
+            <br />
+            {order?.billingAddress.city}, {order?.billingAddress.state}{" "}
+            {order?.billingAddress.zip}
+          </Typography>
+        </Grid>
+        <Grid item classes={{ root: clsx(classes.dark, classes.padding) }}>
+          <Typography variant="body2" classes={{ root: classes.bold }}>
+            Shipping
+          </Typography>
+          <Typography variant="body2">
+            {order?.shippingInfo.name}
+            <br />
+            {order?.shippingInfo.email}
+            <br />
+            {order?.shippingInfo.phone}
+            <br />
+            <br />
+            {order?.shippingAddress.street}
+            <br />
+            {order?.shippingAddress.city}, {order?.shippingAddress.state}{" "}
+            {order?.shippingAddress.zip}
+          </Typography>
         </Grid>
       </Grid>
     </SwipeableDrawer>
