@@ -60,6 +60,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     backgroundColor: theme.palette.primary.main,
+    display: "flex",
   },
   addHover: {
     "&:hover": {
@@ -95,7 +96,7 @@ export default function SettingsPortal() {
   const buttonHeight = matchesMD ? "22rem" : matchesLG ? "18rem" : "22rem"
 
   const buttons = [
-    { label: "Settings", icon: settingsIcon, component: Settings },
+    { label: "Settings", icon: settingsIcon, component: Settings, large: true },
     { label: "Order History", icon: orderHistoryIcon, component: OrderHistory },
     { label: "Favorites", icon: favoritesIcon },
     { label: "Subscriptions", icon: subscriptionIcon },
@@ -124,7 +125,7 @@ export default function SettingsPortal() {
         const size = {
           height:
             selectedSetting === button.label
-              ? matchesMD
+              ? matchesMD && button.large
                 ? "120rem"
                 : "60rem"
               : buttonHeight,
