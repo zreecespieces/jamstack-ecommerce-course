@@ -68,6 +68,10 @@
     },
     "stripeID": {
       "type": "string"
+    },
+    "reviews": {
+      "via": "user",
+      "collection": "review"
     }
   }
 }
