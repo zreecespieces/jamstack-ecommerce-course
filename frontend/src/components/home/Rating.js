@@ -7,23 +7,30 @@ import emptyStar from "../../images/empty-star.svg"
 
 const useStyles = makeStyles(theme => ({
   size: {
-    height: "2rem",
-    width: "2rem",
+    height: ({ size }) => `${size || 2}rem`,
+    width: ({ size }) => `${size || 2}rem`,
   },
 }))
 
-export default function Rating({ number }) {
+export default function Rating({ number, size }) {
   const diff = 5 - Math.ceil(number)
-  const classes = useStyles()
+  const classes = useStyles({ size })
 
   return (
     <>
       {[...Array(Math.floor(number))].map((e, i) => (
         <img src={fullStar} alt="full star" key={i} className={classes.size} />
       ))}
-      {number % 1 !== 0 ? <img src={halfStar} alt="half star" /> : null}
+      {number % 1 !== 0 ? (
+        <img src={halfStar} alt="half star" className={classes.size} />
+      ) : null}
       {[...Array(diff)].map((e, i) => (
-        <img src={emptyStar} alt="empty star" key={`${i}-empty`} />
+        <img
+          src={emptyStar}
+          alt="empty star"
+          key={`${i}-empty`}
+          className={classes.size}
+        />
       ))}
     </>
   )
