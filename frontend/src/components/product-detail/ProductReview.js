@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useRef } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Button from "@material-ui/core/Button"
@@ -43,8 +43,10 @@ const useStyles = makeStyles(theme => ({
 export default function ProductReview() {
   const classes = useStyles()
   const { user } = useContext(UserContext)
+  const ratingRef = useRef(null)
 
   const [values, setValues] = useState({ message: "" })
+  const [tempRating, setTempRating] = useState(0)
 
   const fields = {
     message: {
@@ -61,8 +63,19 @@ export default function ProductReview() {
             {user.username}
           </Typography>
         </Grid>
-        <Grid item>
-          <Rating number={0} size={2.5} />
+        <Grid
+          item
+          ref={ratingRef}
+          onMouseMove={e => {
+            const hoverRating =
+            ((ratingRef.current.getBoundingClientRect().left - e.clientX) /
+              ratingRef.current.getBoundingClientRect().width) *
+              -5
+
+            setTempRating(Math.round(hoverRating * 2) / 2)
+          }}
+        >
+          <Rating number={tempRating} size={2.5} />
         </Grid>
       </Grid>
       <Grid item>
