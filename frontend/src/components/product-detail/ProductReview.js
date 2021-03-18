@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
   date: {
     marginTop: "-0.5rem",
   },
+  rating: {
+    cursor: "pointer",
+  },
   reviewButtonText: {
     color: "#fff",
     fontFamily: "Montserrat",
@@ -47,6 +50,7 @@ export default function ProductReview() {
 
   const [values, setValues] = useState({ message: "" })
   const [tempRating, setTempRating] = useState(0)
+  const [rating, setRating] = useState(null)
 
   const fields = {
     message: {
@@ -65,17 +69,27 @@ export default function ProductReview() {
         </Grid>
         <Grid
           item
+          classes={{ root: classes.rating }}
           ref={ratingRef}
+          onClick={() => setRating(tempRating)}
+          onMouseLeave={() => {
+            if (tempRating > rating) {
+              setTempRating(rating)
+            }
+          }}
           onMouseMove={e => {
             const hoverRating =
-            ((ratingRef.current.getBoundingClientRect().left - e.clientX) /
-              ratingRef.current.getBoundingClientRect().width) *
+              ((ratingRef.current.getBoundingClientRect().left - e.clientX) /
+                ratingRef.current.getBoundingClientRect().width) *
               -5
 
             setTempRating(Math.round(hoverRating * 2) / 2)
           }}
         >
-          <Rating number={tempRating} size={2.5} />
+          <Rating
+            number={rating > tempRating ? rating : tempRating}
+            size={2.5}
+          />
         </Grid>
       </Grid>
       <Grid item>
