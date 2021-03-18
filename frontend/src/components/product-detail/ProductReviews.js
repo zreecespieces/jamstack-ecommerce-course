@@ -11,12 +11,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function ProductReviews() {
+export default function ProductReviews({ product }) {
   const classes = useStyles()
 
   return (
     <Grid item container direction="column" classes={{ root: classes.reviews }}>
-      <ProductReview />
+      <ProductReview product={product} />
     </Grid>
   )
 }
