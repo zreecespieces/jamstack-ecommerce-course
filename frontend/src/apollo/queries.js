@@ -16,7 +16,7 @@ export const GET_REVIEWS = gql`
         id
         text
         rating
-        createdAt
+        updatedAt
         user {
           username
         }

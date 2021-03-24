@@ -40,6 +40,7 @@ export default function ProductReviews({ product, edit, setEdit }) {
         <ProductReview
           user={user}
           reviews={reviews}
+          setReviews={setReviews}
           product={product}
           setEdit={setEdit}
         />
