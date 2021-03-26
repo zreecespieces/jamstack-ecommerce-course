@@ -17,6 +17,7 @@ export default function ProductDetail({
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [selectedImage, setSelectedImage] = useState(0)
   const [stock, setStock] = useState(null)
+  const [rating, setRating] = useState(0)
   const [edit, setEdit] = useState(false)
 
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
@@ -33,6 +34,7 @@ export default function ProductDetail({
       setStock(-1)
     } else if (data) {
       setStock(data.product.variants)
+      setRating(data.product.rating)
     }
   }, [error, data])
 
@@ -89,6 +91,7 @@ export default function ProductDetail({
             selectedVariant={selectedVariant}
             setSelectedVariant={setSelectedVariant}
             stock={stock}
+            rating={rating}
             setEdit={setEdit}
           />
         </Grid>

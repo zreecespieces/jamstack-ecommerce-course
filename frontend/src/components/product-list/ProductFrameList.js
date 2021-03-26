@@ -64,6 +64,7 @@ export default function ProductFrameList({
   setSelectedColor,
   hasStyles,
   stock,
+  rating,
 }) {
   const classes = useStyles()
   const imageIndex = colorIndex(product, variant, selectedColor)
@@ -128,7 +129,7 @@ export default function ProductFrameList({
             </Typography>
           </Grid>
           <Grid item>
-            <Rating number={3.5} />
+            <Rating number={rating} />
           </Grid>
           <Grid item>
             <Chip
