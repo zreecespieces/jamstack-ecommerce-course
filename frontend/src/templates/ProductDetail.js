@@ -93,6 +93,7 @@ export default function ProductDetail({
             stock={stock}
             rating={rating}
             setEdit={setEdit}
+            product={id}
           />
         </Grid>
         <RecentlyViewed
