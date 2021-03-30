@@ -72,6 +72,10 @@
     "reviews": {
       "via": "user",
       "collection": "review"
+    },
+    "favorites": {
+      "via": "user",
+      "collection": "favorite"
     }
   }
 }
