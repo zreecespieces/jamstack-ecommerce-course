@@ -224,9 +224,7 @@ export default function ProductInfo({
       .post(
         process.env.GATSBY_STRAPI_URL + "/favorites",
         { product },
-        {
-          headers: { Authorization: `Bearer ${user.jwt}` },
-        }
+        { headers: { Authorization: `Bearer ${user.jwt}` } }
       )
       .then(response => {
         setLoading(false)
