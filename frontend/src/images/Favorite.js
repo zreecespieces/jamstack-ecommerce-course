@@ -1,10 +1,10 @@
 import React from "react"
 
-function Icon({ color }) {
+function Icon({ color, filled }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 209.13 195.048">
       <path
-        fill="none"
+        fill={!filled ? "none" : color || "#fff"}
         stroke={color || "#fff"}
         strokeLinejoin="round"
         strokeWidth="12"

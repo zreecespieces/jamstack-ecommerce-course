@@ -31,7 +31,7 @@ module.exports = {
 
     if (!favorite) return ctx.unauthorized("You can't update this entry.");
 
-    const entity = await strapi.services.restaurant.delete({ id });
-    return sanitizeEntity(entity, { model: strapi.models.restaurant });
+    const entity = await strapi.services.favorite.delete({ id });
+    return sanitizeEntity(entity, { model: strapi.models.favorite });
   },
 };
