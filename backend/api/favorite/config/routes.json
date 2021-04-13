@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/favorites/userFavorites",
+      "handler": "favorite.userFavorites",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/favorites/count",
       "handler": "favorite.count",
       "config": {
