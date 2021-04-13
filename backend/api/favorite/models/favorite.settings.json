@@ -9,13 +9,13 @@
     "timestamps": true
   },
   "attributes": {
-    "product": {
-      "model": "product"
-    },
     "user": {
       "plugin": "users-permissions",
       "model": "user",
       "via": "favorites"
+    },
+    "variant": {
+      "model": "variant"
     }
   }
 }

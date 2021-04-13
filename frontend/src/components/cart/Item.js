@@ -82,6 +82,7 @@ export default function Item({ item }) {
         color: theme.palette.secondary.main,
         size: matchesXS ? 2 : 3,
         buttonClass: classes.actionButton,
+        variant: item.variant.id,
       },
     },
     { icon: SubscribeIcon, color: theme.palette.secondary.main },
