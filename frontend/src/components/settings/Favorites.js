@@ -42,8 +42,15 @@ const useStyles = makeStyles(theme => ({
 export default function Favorites() {
   const classes = useStyles()
   const [products, setProducts] = useState([])
+  const [selectedVariants, setSelectedVariants] = useState({})
+  const [selectedSizes, setSelectedSizes] = useState({})
+  const [selectedColors, setSelectedColors] = useState({})
   const { user } = useContext(UserContext)
   const { dispatchFeedback } = useContext(FeedbackContext)
+
+  const setSelectedHelper = (selectedFunction, values, value, row) => {
+    selectedFunction({ ...values, [row]: value })
+  }
 
   const createData = data =>
     data.map(item => ({
@@ -84,18 +91,60 @@ export default function Favorites() {
       headerName: "Variant",
       width: 275,
       sortable: false,
-      renderCell: ({ value }) => (
-        <Grid container direction="column">
-          {value.current.id}
-        </Grid>
-      ),
+      renderCell: ({ value, row }) => {
+        let sizes = []
+        let colors = []
+
+        value.all.map(variant => {
+          sizes.push(variant.size)
+
+          if (
+            !colors.includes(variant.color) &&
+            variant.size === selectedSizes[row.id] &&
+            variant.style === value.current.style
+          ) {
+            colors.push(variant.color)
+          }
+        })
+
+        return (
+          <Grid container direction="column">
+            <Sizes
+              sizes={sizes}
+              selectedSize={selectedSizes[row.id]}
+              setSelectedSize={size =>
+                setSelectedHelper(setSelectedSizes, selectedSizes, size, row.id)
+              }
+            />
+            <Swatches
+              colors={colors}
+              selectedColor={selectedColors[row.id]}
+              setSelectedColor={color =>
+                setSelectedHelper(
+                  setSelectedColors,
+                  selectedColors,
+                  color,
+                  row.id
+                )
+              }
+            />
+          </Grid>
+        )
+      },
     },
     {
       field: "quantity",
       headerName: "Quantity",
       width: 250,
       sortable: false,
-      renderCell: ({ value }) => <div>{value.id}</div>,
+      renderCell: ({ value }) => (
+        <QtyButton
+          variants={value}
+          selectedVariant={0}
+          name={value[0].product.name.split(" ")[0]}
+          stock={[{ qty: value[0].qty }]}
+        />
+      ),
     },
     {
       field: "price",
