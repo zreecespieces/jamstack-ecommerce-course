@@ -53,16 +53,20 @@ export default function Favorites() {
   }
 
   const createData = data =>
-    data.map(item => ({
-      item: {
-        name: item.variants[0].product.name.split(" ")[0],
-        image: item.variants[0].images[0].url,
-      },
-      variant: { all: item.variants, current: item.variant },
-      quantity: item.variants,
-      price: item.variants[0].price,
-      id: item.id,
-    }))
+    data.map(item => {
+      const selectedVariant = selectedVariants[item.id]
+
+      return {
+        item: {
+          name: item.variants[selectedVariant].product.name.split(" ")[0],
+          image: item.variants[selectedVariant].images[0].url,
+        },
+        variant: { all: item.variants, current: item.variant },
+        quantity: item.variants,
+        price: item.variants[selectedVariant].price,
+        id: item.id,
+      }
+    })
 
   const columns = [
     {
@@ -168,7 +172,8 @@ export default function Favorites() {
     },
   ]
 
-  const rows = createData(products)
+  const rows =
+    Object.keys(selectedVariants).length > 0 ? createData(products) : []
 
   useEffect(() => {
     axios
@@ -177,6 +182,26 @@ export default function Favorites() {
       })
       .then(response => {
         setProducts(response.data)
+
+        let newVariants = {}
+        let newSizes = {}
+        let newColors = {}
+
+        response.data.forEach(favorite => {
+          const found = favorite.variants.find(
+            variant => variant.id === favorite.variant.id
+          )
+
+          const index = favorite.variants.indexOf(found)
+
+          newVariants = { ...newVariants, [favorite.id]: index }
+          newSizes = { ...newSizes, [favorite.id]: favorite.variant.size }
+          newColors = { ...newColors, [favorite.id]: favorite.variant.color }
+        })
+
+        setSelectedVariants(newVariants)
+        setSelectedSizes(newSizes)
+        setSelectedColors(newColors)
       })
       .catch(error => {
         console.error(error)
