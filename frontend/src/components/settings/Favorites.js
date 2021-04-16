@@ -50,6 +50,44 @@ export default function Favorites() {
 
   const setSelectedHelper = (selectedFunction, values, value, row) => {
     selectedFunction({ ...values, [row]: value })
+
+    const { variants } = products.find(favorite => favorite.id === row)
+    const selectedVariant = selectedVariants[row]
+
+    let newVariant
+
+    if (value.includes("#")) {
+      newVariant = variants.find(
+        variant =>
+          variant.size === selectedSizes[row] &&
+          variant.style === variants[selectedVariant].style &&
+          variant.color === value
+      )
+    } else {
+      let newColors = []
+
+      variants.map(variant => {
+        if (
+          !newColors.includes(variant.color) &&
+          variant.size === value &&
+          variants[selectedVariant].style === variant.style
+        ) {
+          newColors.push(variant.color)
+        }
+      })
+
+      newVariant = variants.find(
+        variant =>
+          variant.size === value &&
+          variant.style === variants[selectedVariant].style &&
+          variant.color === newColors[0]
+      )
+    }
+
+    setSelectedVariants({
+      ...selectedVariants,
+      [row]: variants.indexOf(newVariant),
+    })
   }
 
   const createData = data =>
@@ -141,14 +179,19 @@ export default function Favorites() {
       headerName: "Quantity",
       width: 250,
       sortable: false,
-      renderCell: ({ value }) => (
-        <QtyButton
-          variants={value}
-          selectedVariant={0}
-          name={value[0].product.name.split(" ")[0]}
-          stock={[{ qty: value[0].qty }]}
-        />
-      ),
+      renderCell: ({ value, row }) => {
+        const selectedVariant = selectedVariants[row.id]
+        const stock = value.map(variant => ({ qty: variant.qty }))
+
+        return (
+          <QtyButton
+            variants={value}
+            selectedVariant={selectedVariant}
+            name={value[selectedVariant].product.name.split(" ")[0]}
+            stock={stock}
+          />
+        )
+      },
     },
     {
       field: "price",
