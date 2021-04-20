@@ -76,6 +76,10 @@
     "favorites": {
       "via": "user",
       "collection": "favorite"
+    },
+    "subscriptions": {
+      "via": "user",
+      "collection": "subscription"
     }
   }
 }
