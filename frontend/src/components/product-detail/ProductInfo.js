@@ -220,7 +220,11 @@ export default function ProductInfo({
           <Favorite size={4} variant={variants[selectedVariant].id} noPadding />
         </Grid>
         <Grid item classes={{ root: classes.iconWrapper }}>
-          <Subscription size={4} />
+          <Subscription
+            stock={stock}
+            selectedVariant={selectedVariant}
+            size={4}
+          />
         </Grid>
       </Grid>
       <Grid
