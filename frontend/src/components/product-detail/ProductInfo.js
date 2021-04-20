@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Rating from "../home/Rating"
 import Favorite from "../ui/favorite"
+import Subscription from "../ui/subscription"
 import Sizes from "../product-list/Sizes"
 import Swatches from "../product-list/Swatches"
 import QtyButton from "../product-list/QtyButton"
@@ -18,8 +19,6 @@ import { colorIndex } from "../product-list/ProductFrameGrid"
 
 import { UserContext, FeedbackContext } from "../../contexts"
 import { setSnackbar } from "../../contexts/actions"
-
-import subscription from "../../images/subscription.svg"
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -221,11 +220,7 @@ export default function ProductInfo({
           <Favorite size={4} variant={variants[selectedVariant].id} noPadding />
         </Grid>
         <Grid item classes={{ root: classes.iconWrapper }}>
-          <img
-            src={subscription}
-            alt="add item to subscriptions"
-            className={classes.icon}
-          />
+          <Subscription size={4} />
         </Grid>
       </Grid>
       <Grid
