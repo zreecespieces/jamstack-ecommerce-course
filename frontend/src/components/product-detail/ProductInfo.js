@@ -222,6 +222,8 @@ export default function ProductInfo({
         <Grid item classes={{ root: classes.iconWrapper }}>
           <Subscription
             stock={stock}
+            variant={variants[selectedVariant]}
+            name={name.split(" ")[0]}
             selectedVariant={selectedVariant}
             size={4}
           />

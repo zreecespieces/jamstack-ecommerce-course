@@ -81,14 +81,26 @@ export default function QtyButton({
   white,
   hideCartButton,
   round,
+  override,
 }) {
   const { cart, dispatchCart } = useContext(CartContext)
   const existingItem = isCart
     ? cart.find(item => item.variant === variants[selectedVariant])
     : null
   const classes = useStyles({ white, round })
-  const [qty, setQty] = useState(isCart ? existingItem.qty : 1)
+  const [qty, setQtyState] = useState(isCart ? existingItem.qty : 1)
   const [success, setSuccess] = useState(false)
+
+  let setQty
+
+  if (override) {
+    setQty = val => {
+      override.setValue(val)
+      setQtyState(val)
+    }
+  } else {
+    setQty = setQtyState
+  }
 
   const handleChange = direction => {
     if (qty === stock[selectedVariant].qty && direction === "up") {
