@@ -13,6 +13,63 @@ const sanitizeUser = (user) =>
     model: strapi.query("user", "users-permissions").model,
   });
 
+const frequencies = [
+  {
+    label: "Week",
+    value: "one_week",
+    delivery: () => {
+      let now = new Date();
+      now.setDate(now.getDate() + 7);
+      return now;
+    },
+  },
+  {
+    label: "Two Weeks",
+    value: "two_weeks",
+    delivery: () => {
+      let now = new Date();
+      now.setDate(now.getDate() + 14);
+      return now;
+    },
+  },
+  {
+    label: "Month",
+    value: "one_month",
+    delivery: () => {
+      let now = new Date();
+      now.setMonth(now.getMonth() + 1);
+      return now;
+    },
+  },
+  {
+    label: "Three Months",
+    value: "three_months",
+    delivery: () => {
+      let now = new Date();
+      now.setMonth(now.getMonth() + 3);
+      return now;
+    },
+  },
+  {
+    label: "Six Months",
+    value: "six_months",
+    delivery: () => {
+      let now = new Date();
+      now.setMonth(now.getMonth() + 6);
+      return now;
+    },
+  },
+  {
+    label: "Year",
+    value: "annually",
+    delivery: () => {
+      let now = new Date();
+      now.setMonth(now.getMonth() + 12);
+      return now;
+    },
+  },
+];
+
 module.exports = {
   async process(ctx) {
     const {
@@ -131,6 +188,27 @@ module.exports = {
         const serverItem = await strapi.services.variant.findOne({
           id: clientItem.variant.id,
         });
+
+        if (clientItem.subscription) {
+          const frequency = frequencies.find(
+            (option) => option.label === clientItem.subscription
+          );
+
+          await strapi.services.subscription.create({
+            user: orderCustomer,
+            variant: clientItem.variant.id,
+            name: clientItem.name,
+            frequency: frequency.value,
+            last_delivery: new Date(),
+            next_delivery: frequency.delivery(),
+            quantity: clientItem.qty,
+            paymentMethod,
+            shippingAddress,
+            billingAddress,
+            shippingInfo,
+            billingInfo,
+          });
+        }
 
         await strapi.services.variant.update(
           { id: clientItem.variant.id },
