@@ -67,10 +67,15 @@ module.exports = {
 
     let newUser = { ...sanitizeUser(user) };
     const favorites = await strapi.services.favorite.find({ user });
+    const subscriptions = await strapi.services.subscription.find({ user });
     newUser.favorites = favorites.map((favorite) => ({
       variant: favorite.variant.id,
       id: favorite.id,
     }));
+    newUser.subscriptions = subscriptions.map((subscription) => {
+      delete subscription.user;
+      return subscription;
+    });
 
     ctx.body = newUser;
   },
