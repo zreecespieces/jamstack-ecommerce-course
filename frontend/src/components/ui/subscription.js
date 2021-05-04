@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   iconButton: {
-    padding: 0,
+    padding: ({ noPadding }) => (noPadding ? 0 : undefined),
   },
   cartButton: {
     height: "8rem",
@@ -71,8 +71,10 @@ export default function Subscription({
   selectedVariant,
   variant,
   name,
+  color,
+  noPadding,
 }) {
-  const classes = useStyles({ size })
+  const classes = useStyles({ size, noPadding })
   const [open, setOpen] = useState(false)
   const [qty, setQty] = useState(1)
   const [frequency, setFrequency] = useState("Month")
@@ -109,7 +111,7 @@ export default function Subscription({
     <>
       <IconButton onClick={handleOpen} classes={{ root: classes.iconButton }}>
         <span className={classes.iconWrapper}>
-          <SubscriptionIcon />
+          <SubscriptionIcon color={color} />
         </span>
       </IconButton>
       <Dialog

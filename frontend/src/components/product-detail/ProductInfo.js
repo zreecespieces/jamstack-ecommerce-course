@@ -226,6 +226,7 @@ export default function ProductInfo({
             name={name.split(" ")[0]}
             selectedVariant={selectedVariant}
             size={4}
+            noPadding
           />
         </Grid>
       </Grid>
