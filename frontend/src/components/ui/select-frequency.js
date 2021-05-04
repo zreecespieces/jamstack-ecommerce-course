@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function SelectFrequency({ value, setValue }) {
+export default function SelectFrequency({ value, setValue, chip }) {
   const classes = useStyles()
 
   const frequencies = [
@@ -51,15 +51,17 @@ export default function SelectFrequency({ value, setValue }) {
       IconComponent={() => null}
       MenuProps={{ classes: { paper: classes.menu } }}
       onChange={event => setValue(event.target.value)}
-      renderValue={selected => (
-        <Chip
-          label={selected}
-          classes={{
-            root: classes.chipRoot,
-            label: classes.chipLabel,
-          }}
-        />
-      )}
+      renderValue={selected =>
+        chip || (
+          <Chip
+            label={selected}
+            classes={{
+              root: classes.chipRoot,
+              label: classes.chipLabel,
+            }}
+          />
+        )
+      }
     >
       {frequencies.map(frequency => (
         <MenuItem
