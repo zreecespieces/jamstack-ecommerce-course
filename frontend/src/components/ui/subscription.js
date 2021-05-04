@@ -13,7 +13,11 @@ import QtyButton from "../product-list/QtyButton"
 import SelectFrequency from "../ui/select-frequency"
 
 import { CartContext, FeedbackContext, UserContext } from "../../contexts"
-import { setSnackbar, addToCart } from "../../contexts/actions"
+import {
+  setSnackbar,
+  addToCart,
+  toggleSubscription,
+} from "../../contexts/actions"
 
 import SubscriptionIcon from "../../images/Subscription"
 
@@ -73,6 +77,8 @@ export default function Subscription({
   name,
   color,
   noPadding,
+  isCart,
+  cartFrequency,
 }) {
   const classes = useStyles({ size, noPadding })
   const [open, setOpen] = useState(false)
@@ -94,6 +100,11 @@ export default function Subscription({
   }
 
   const handleOpen = () => {
+    if (isCart) {
+      dispatchCart(toggleSubscription(isCart.variant, cartFrequency))
+      return
+    }
+
     if (user.username === "Guest") {
       dispatchFeedback(
         setSnackbar({

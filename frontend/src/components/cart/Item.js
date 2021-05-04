@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
 export default function Item({ item }) {
   const classes = useStyles({ subscription: item.subscription })
   const theme = useTheme()
-  const [frequency, setFrequency] = useState(item.subscription)
+  const [frequency, setFrequency] = useState(item.subscription || "Month")
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
   const { dispatchCart } = useContext(CartContext)
 
@@ -115,6 +115,7 @@ export default function Item({ item }) {
         color: theme.palette.secondary.main,
         isCart: item,
         size: matchesXS ? 2 : 3,
+        cartFrequency: frequency,
       },
     },
     {
