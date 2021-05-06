@@ -45,6 +45,50 @@ module.exports = {
             off_session: true,
             confirm: true,
           });
+
+          var order = await strapi.services.order.create({
+            shippingAddress: subscription.shippingAddress,
+            billingAddress: subscription.billingAddress,
+            shippingInfo: subscription.shippingInfo,
+            billingInfo: subscription.billingInfo,
+            shippingOption: { label: "subscription", price: 0 },
+            subtotal: subscription.variant.price,
+            total: subscription.variant.price * 1.075,
+            tax: subscription.variant.price * 0.075,
+            items: [
+              {
+                variant: subscription.variant,
+                name: subscription.name,
+                qty: subscription.quantity,
+                stock: subscription.variant.qty,
+                product: subscription.variant.product,
+              },
+            ],
+            transaction: paymentIntent.id,
+            paymentMethod: subscription.paymentMethod,
+            user: subscription.user.id,
+            subscription: subscription.id,
+          });
+
+          const frequencies = await strapi.services.order.frequency();
+          const confirmation = await strapi.services.order.confirmationEmail(
+            order
+          );
+
+          await strapi.plugins["email"].services.email.send({
+            to: subscription.billingInfo.email,
+            subject: "VAR-X Order Confirmation",
+            html: confirmation,
+          });
+
+          const frequency = frequencies.find(
+            (option) => option.value === subscription.frequency
+          );
+
+          await strapi.services.subscription.update(
+            { id: subscription.id },
+            { next_delivery: frequency.delivery() }
+          );
         } catch (error) {
           //Notify customer payment failed, and prompt them to enter new information
           console.log(error);

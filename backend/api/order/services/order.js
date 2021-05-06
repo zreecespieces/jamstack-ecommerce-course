@@ -6,6 +6,65 @@
  */
 
 module.exports = {
+  async frequency() {
+    return [
+      {
+        label: "Week",
+        value: "one_week",
+        delivery: () => {
+          let now = new Date();
+          now.setDate(now.getDate() + 7);
+          return now;
+        },
+      },
+      {
+        label: "Two Weeks",
+        value: "two_weeks",
+        delivery: () => {
+          let now = new Date();
+          now.setDate(now.getDate() + 14);
+          return now;
+        },
+      },
+      {
+        label: "Month",
+        value: "one_month",
+        delivery: () => {
+          let now = new Date();
+          now.setMonth(now.getMonth() + 1);
+          return now;
+        },
+      },
+      {
+        label: "Three Months",
+        value: "three_months",
+        delivery: () => {
+          let now = new Date();
+          now.setMonth(now.getMonth() + 3);
+          return now;
+        },
+      },
+      {
+        label: "Six Months",
+        value: "six_months",
+        delivery: () => {
+          let now = new Date();
+          now.setMonth(now.getMonth() + 6);
+          return now;
+        },
+      },
+      {
+        label: "Year",
+        value: "annually",
+        delivery: () => {
+          let now = new Date();
+          now.setMonth(now.getMonth() + 12);
+          return now;
+        },
+      },
+    ];
+  },
+
   async confirmationEmail(order) {
     return `
     <html xmlns="http://www.w3.org/1999/xhtml">
