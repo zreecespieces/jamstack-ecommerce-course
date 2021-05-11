@@ -87,7 +87,10 @@ module.exports = {
 
           await strapi.services.subscription.update(
             { id: subscription.id },
-            { next_delivery: frequency.delivery() }
+            {
+              next_delivery: frequency.delivery(),
+              last_delivery: new Date(),
+            }
           );
         } catch (error) {
           //Notify customer payment failed, and prompt them to enter new information
