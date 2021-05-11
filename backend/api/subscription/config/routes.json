@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/subscriptions/me",
+      "handler": "subscription.userSubscriptions",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/subscriptions/count",
       "handler": "subscription.count",
       "config": {
