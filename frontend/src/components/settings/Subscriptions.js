@@ -5,11 +5,20 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 
 import SettingsGrid from "./SettingsGrid"
+import QtyButton from "../product-list/QtyButton"
 
 import { UserContext, FeedbackContext } from "../../contexts"
 import { setSnackbar } from "../../contexts/actions"
 
-const useStyles = makeStyles(theme => ({}))
+const useStyles = makeStyles(theme => ({
+  bold: {
+    fontWeight: 600,
+  },
+  productImage: {
+    height: "10rem",
+    width: "10rem",
+  },
+}))
 
 export default function Subscriptions({ setSelectedSetting }) {
   const classes = useStyles()
@@ -67,9 +76,60 @@ export default function Subscriptions({ setSelectedSetting }) {
     )
 
   const columns = [
-    { field: "details", headerName: "Details", width: 250, sortable: false },
-    { field: "item", headerName: "Item", width: 250, sortable: false },
-    { field: "quantity", headerName: "Quantity", width: 250, sortable: false },
+    {
+      field: "details",
+      headerName: "Details",
+      width: 350,
+      sortable: false,
+      renderCell: ({ value }) => (
+        <Typography variant="body2" classes={{ root: classes.bold }}>
+          {`${value.shippingInfo.name}`}
+          <br />
+          {`${value.shippingAddress.street}`}
+          <br />
+          {`${value.shippingAddress.city}, ${value.shippingAddress.state} ${value.shippingAddress.zip}`}
+        </Typography>
+      ),
+    },
+    {
+      field: "item",
+      headerName: "Item",
+      width: 250,
+      sortable: false,
+      renderCell: ({ value }) => (
+        <Grid container direction="column" alignItems="center">
+          <Grid item>
+            <img
+              src={process.env.GATSBY_STRAPI_URL + value.variant.images[0].url}
+              alt={value.name}
+              className={classes.productImage}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" classes={{ root: classes.bold }}>
+              {value.name}
+            </Typography>
+          </Grid>
+        </Grid>
+      ),
+    },
+    {
+      field: "quantity",
+      headerName: "Quantity",
+      width: 250,
+      sortable: false,
+      renderCell: ({ value }) => (
+        <QtyButton
+          stock={[{ qty: value.variant.qty }]}
+          variant={value.variant}
+          selectedVariant={0}
+          name={value.name}
+          white
+          hideCartButton
+          round
+        />
+      ),
+    },
     {
       field: "frequency",
       headerName: "Frequency",
@@ -83,12 +143,10 @@ export default function Subscriptions({ setSelectedSetting }) {
 
   const rows = createData(subscriptions)
 
-  console.log(rows)
-
   return (
     <SettingsGrid
       setSelectedSetting={setSelectedSetting}
-      rows={[]}
+      rows={rows}
       columns={columns}
       rowsPerPage={3}
     />
