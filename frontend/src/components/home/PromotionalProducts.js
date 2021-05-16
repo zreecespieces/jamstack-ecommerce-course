@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Carousel from "react-spring-3d-carousel"
 import clsx from "clsx"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
-import { useStaticQuery, graphql } from "gatsby"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
 
 import promoAdornment from "../../images/promo-adornment.svg"
@@ -93,6 +93,9 @@ export default function PromotionalProducts() {
             name
             strapiId
             description
+            category {
+              name
+            }
             variants {
               images {
                 url
@@ -133,13 +136,14 @@ export default function PromotionalProducts() {
           <Grid item>
             {selectedSlide === i ? (
               <Typography variant="h1" classes={{ root: classes.productName }}>
-                {node.name.split(" ")[0]}
+                {node.category.name.toLowerCase()}
               </Typography>
             ) : null}
           </Grid>
         </Grid>
       ),
       description: node.description,
+      url: `/${node.category.name.toLowerCase()}`,
     })
   )
 
@@ -158,7 +162,7 @@ export default function PromotionalProducts() {
         <Typography variant="h2" paragraph>
           {slides[selectedSlide].description}
         </Typography>
-        <Button>
+        <Button component={Link} to={slides[selectedSlide].url}>
           <Typography variant="h4" classes={{ root: classes.explore }}>
             Explore
           </Typography>

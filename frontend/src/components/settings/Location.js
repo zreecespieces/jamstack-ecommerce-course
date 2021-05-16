@@ -174,9 +174,6 @@ export default function Location({
     setValues(values)
   }
 
-  console.log("VALUES", values)
-  console.log("BILLING VALUES", billingValues)
-
   return (
     <Grid
       item
