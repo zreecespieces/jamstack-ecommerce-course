@@ -181,6 +181,14 @@ export default function Details({
     ]
   }
 
+  const handleValues = values => {
+    if (billing === slot && !noSlots) {
+      setBillingValues(values)
+    }
+
+    setValues(values)
+  }
+
   return (
     <Grid
       item
@@ -216,9 +224,7 @@ export default function Details({
           <Fields
             fields={pair}
             values={billing === slot && !noSlots ? billingValues : values}
-            setValues={
-              billing === slot && !noSlots ? setBillingValues : setValues
-            }
+            setValues={handleValues}
             errors={errors}
             setErrors={setErrors}
             isWhite

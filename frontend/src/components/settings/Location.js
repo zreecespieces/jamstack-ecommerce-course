@@ -90,14 +90,14 @@ export default function Location({
 
     axios
       .get(
-        `https://data.opendatasoft.com/api/records/1.0/search/?dataset=geonames-postal-code%40public-us&rows=1&sort=place_name&facet=country_code&facet=admin_name1&facet=place_name&facet=postal_code&refine.country_code=US&refine.postal_code=${values.zip}`
+        `https://data.opendatasoft.com/api/records/1.0/search/?dataset=geonames-postal-code%40public&rows=1&facet=country_code&facet=admin_name1&facet=place_name&facet=postal_code&refine.country_code=US&refine.postal_code=${values.zip}`
       )
       .then(response => {
         setLoading(false)
 
         const { place_name, admin_name1 } = response.data.records[0].fields
 
-        setValues({ ...values, city: place_name, state: admin_name1 })
+        handleValues({ ...values, city: place_name, state: admin_name1 })
       })
       .catch(error => {
         setLoading(false)
@@ -131,7 +131,7 @@ export default function Location({
 
       getLocation()
     } else if (values.zip.length < 5 && values.city) {
-      setValues({ ...values, city: "", state: "" })
+      handleValues({ ...values, city: "", state: "" })
     }
   }, [values])
 
@@ -166,6 +166,17 @@ export default function Location({
     },
   }
 
+  const handleValues = values => {
+    if (billing === slot && !noSlots) {
+      setBillingValues(values)
+    }
+
+    setValues(values)
+  }
+
+  console.log("VALUES", values)
+  console.log("BILLING VALUES", billingValues)
+
   return (
     <Grid
       item
@@ -194,9 +205,7 @@ export default function Location({
         <Fields
           fields={fields}
           values={billing === slot && !noSlots ? billingValues : values}
-          setValues={
-            billing === slot && !noSlots ? setBillingValues : setValues
-          }
+          setValues={handleValues}
           errors={errors}
           setErrors={setErrors}
           isWhite
