@@ -57,7 +57,7 @@ module.exports = {
 
     if (
       shippingValid === undefined ||
-      (serverTotal * 1.075 + shippingValid.price).toFixed(2) !== total
+      ((serverTotal + shippingValid.price) * 1.075).toFixed(2) !== total
     ) {
       ctx.send({ error: "Invalid Cart" }, 400);
     } else if (unavailable.length > 0) {
