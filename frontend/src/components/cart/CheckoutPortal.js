@@ -50,7 +50,7 @@ export default function CheckoutPortal({ user }) {
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
   const hasSubscriptionCart = cart.some(item => item.subscription)
-  const hasSubscriptionActive = user.subscriptions.length > 0
+  const hasSubscriptionActive = user.subscriptions?.length > 0
 
   const [selectedStep, setSelectedStep] = useState(0)
   const [detailValues, setDetailValues] = useState({

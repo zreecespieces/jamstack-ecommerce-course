@@ -156,7 +156,9 @@ export default function PromotionalProducts() {
       direction={matchesMD ? "column" : "row"}
     >
       <Grid item classes={{ root: classes.carouselContainer }}>
-        <Carousel slides={slides} goToSlide={selectedSlide} />
+        {typeof window !== "undefined" ? (
+          <Carousel slides={slides} goToSlide={selectedSlide} />
+        ) : null}
       </Grid>
       <Grid item classes={{ root: classes.descriptionContainer }}>
         <Typography variant="h2" paragraph>

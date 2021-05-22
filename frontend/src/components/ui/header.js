@@ -85,11 +85,15 @@ export default function Header({ categories }) {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   const activeIndex = () => {
+    const pathname =
+      typeof window !== "undefined"
+        ? window.location.pathname.split("/")[1]
+        : null
+
     const found = routes.indexOf(
       routes.filter(
         ({ node: { name, link } }) =>
-          (link || `/${name.toLowerCase()}`) ===
-          `/${window.location.pathname.split("/")[1]}`
+          (link || `/${name.toLowerCase()}`) === `/${pathname}`
       )[0]
     )
 

@@ -22,8 +22,16 @@ export default function ProductDetail({
 
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
-  const params = new URLSearchParams(window.location.search)
+  const params =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : { get: () => null }
   const style = params.get("style")
+
+  const recentlyViewedProducts =
+    typeof window !== "undefined"
+      ? JSON.parse(window.localStorage.getItem("recentlyViewed"))
+      : null
 
   const { loading, error, data } = useQuery(GET_DETAILS, {
     variables: { id },
@@ -96,9 +104,7 @@ export default function ProductDetail({
             product={id}
           />
         </Grid>
-        <RecentlyViewed
-          products={JSON.parse(window.localStorage.getItem("recentlyViewed"))}
-        />
+        <RecentlyViewed products={recentlyViewedProducts} />
         <ProductReviews product={id} edit={edit} setEdit={setEdit} />
       </Grid>
     </Layout>
