@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
@@ -8,6 +8,9 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import clsx from "clsx"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import { Link } from "gatsby"
+
+import { FeedbackContext } from "../contexts"
+import { setSnackbar } from "../contexts/actions"
 
 import address from "../images/address.svg"
 import Email from "../images/EmailAdornment"
@@ -153,9 +156,16 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const encode = data =>
+  Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&")
+
 const ContactPage = () => {
   const classes = useStyles()
   const theme = useTheme()
+
+  const { dispatchFeedback } = useContext(FeedbackContext)
 
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
   const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -233,6 +243,41 @@ const ContactPage = () => {
     Object.keys(errors).some(error => errors[error] === true) ||
     Object.keys(errors).length !== 4
 
+  const handleSubmit = e => {
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode({
+        "form-name": "contact",
+        name: values.name,
+        number: values.phone,
+        email: values.email,
+        message: values.message,
+      }),
+    })
+      .then(() => {
+        setValues({ name: "", phone: "", email: "", message: "" })
+        dispatchFeedback(
+          setSnackbar({
+            status: "success",
+            message: "Message sent successfully.",
+          })
+        )
+      })
+      .catch(error => {
+        console.error(error)
+        dispatchFeedback(
+          setSnackbar({
+            status: "error",
+            message:
+              "There was a problem sending your message. Please try again.",
+          })
+        )
+      })
+
+    e.preventDefault()
+  }
+
   return (
     <Layout>
       <Grid
@@ -243,7 +288,14 @@ const ContactPage = () => {
         direction={matchesMD ? "column" : "row"}
       >
         {/* Contact Form */}
-        <Grid item classes={{ root: classes.formWrapper }}>
+        <Grid
+          component="form"
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          item
+          classes={{ root: classes.formWrapper }}
+        >
           <Grid
             container
             classes={{ root: classes.formContainer }}
@@ -278,6 +330,7 @@ const ContactPage = () => {
                       }}
                     >
                       <TextField
+                        name={field}
                         value={values[field]}
                         onChange={e => {
                           const valid = validateHelper(e)
@@ -319,6 +372,8 @@ const ContactPage = () => {
             </Grid>
             <Grid
               item
+              type="submit"
+              onClick={handleSubmit}
               component={Button}
               disabled={disabled}
               classes={{
