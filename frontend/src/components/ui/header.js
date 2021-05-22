@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { Link, navigate } from "gatsby"
 
 import { CartContext } from "../../contexts"
+import { useIsClient } from "../../hooks"
 
 import search from "../../images/search.svg"
 import cartIcon from "../../images/cart.svg"
@@ -78,6 +79,7 @@ const useStyles = makeStyles(theme => ({
 export default function Header({ categories }) {
   const classes = useStyles()
   const { cart } = useContext(CartContext)
+  const { key } = useIsClient()
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -199,6 +201,7 @@ export default function Header({ categories }) {
               >
                 {action.alt === "cart" ? (
                   <Badge
+                    key={key}
                     overlap="circle"
                     badgeContent={cart.length}
                     classes={{ badge: classes.badge }}
