@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
 export default function Header({ categories }) {
   const classes = useStyles()
   const { cart } = useContext(CartContext)
-  const { key } = useIsClient()
+  const { isClient, key } = useIsClient()
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -109,7 +109,7 @@ export default function Header({ categories }) {
 
   const tabs = (
     <Tabs
-      value={activeIndex()}
+      value={!isClient ? 0 : activeIndex()}
       classes={{ indicator: classes.coloredIndicator, root: classes.tabs }}
     >
       {routes.map(route => (
@@ -139,7 +139,7 @@ export default function Header({ categories }) {
           { node: { name: "Account", strapiId: "account", link: "/account" } },
         ].map((route, i) => (
           <ListItem
-            selected={activeIndex() === i}
+            selected={!isClient ? false : activeIndex() === i}
             component={Link}
             to={route.node.link || `/${route.node.name.toLowerCase()}`}
             divider
