@@ -105,10 +105,9 @@ export default function ProductFrameGrid({
   const imageIndex = colorIndex(product, variant, selectedColor)
 
   const imgURL =
-    process.env.GATSBY_STRAPI_URL +
-    (imageIndex !== -1
+    imageIndex !== -1
       ? product.node.variants[imageIndex].images[0].url
-      : variant.images[0].url)
+      : variant.images[0].url
 
   const productName = product.node.name.split(" ")[0]
 

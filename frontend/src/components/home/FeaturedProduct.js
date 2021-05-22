@@ -128,7 +128,7 @@ export default function FeaturedProduct({
         classes={{ root: classes.frame }}
       >
         <img
-          src={process.env.GATSBY_STRAPI_URL + node.variants[0].images[0].url}
+          src={node.variants[0].images[0].url}
           alt={node.name}
           className={classes.featured}
         />
@@ -143,7 +143,7 @@ export default function FeaturedProduct({
             [classes.slideRight]:
               !matchesMD &&
               expanded === i &&
-            (alignment === "flex-start" || alignment === "center"),
+              (alignment === "flex-start" || alignment === "center"),
             [classes.slideDown]: matchesMD && expanded === i,
           }),
         }}

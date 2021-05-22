@@ -131,7 +131,7 @@ export default function Item({ item }) {
       <Grid item>
         <img
           className={classes.productImage}
-          src={process.env.GATSBY_STRAPI_URL + item.variant.images[0].url}
+          src={item.variant.images[0].url}
           alt={item.variant.id}
         />
       </Grid>
