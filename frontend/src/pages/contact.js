@@ -9,6 +9,7 @@ import clsx from "clsx"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import { Link } from "gatsby"
 
+import SEO from "../components/ui/seo"
 import { FeedbackContext } from "../contexts"
 import { setSnackbar } from "../contexts/actions"
 
@@ -280,6 +281,10 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Contact Us"
+        description="Send us a message and learn more about the high quality clothing standards at VAR-X."
+      />
       <Grid
         container
         justify="space-around"

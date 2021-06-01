@@ -36,7 +36,7 @@ export default function OrderDetailItem({ item }) {
     >
       <Grid item>
         <img
-          src={tem.variant.images[0].url}
+          src={item.variant.images[0].url}
           alt={item.name}
           className={classes.product}
         />

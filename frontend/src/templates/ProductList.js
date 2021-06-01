@@ -7,6 +7,7 @@ import { makeStyles, styled } from "@material-ui/core/styles"
 import { graphql } from "gatsby"
 
 import Layout from "../components/ui/layout"
+import SEO from "../components/ui/seo"
 import DynamicToolbar from "../components/product-list/DynamicToolbar"
 import ListOfProducts from "../components/product-list/ListOfProducts"
 import {
@@ -158,6 +159,7 @@ export default function ProductList({
 
   return (
     <Layout>
+      <SEO title={name} description={description} />
       <Grid container direction="column" alignItems="center">
         <div ref={scrollRef} />
         <DynamicToolbar

@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 import Layout from "../components/ui/layout"
+import SEO from "../components/ui/seo"
 import ProductImages from "../components/product-detail/ProductImages"
 import ProductInfo from "../components/product-detail/ProductInfo"
 import RecentlyViewed from "../components/product-detail/RecentlyViewed"
@@ -85,6 +86,7 @@ export default function ProductDetail({
 
   return (
     <Layout>
+      <SEO title={name.split(" ")[0]} description={description} />
       <Grid container direction="column">
         <Grid item container direction={matchesMD ? "column" : "row"}>
           <ProductImages

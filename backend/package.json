@@ -1,8 +1,8 @@
 {
-  "name": "backend",
+  "name": "Strapi-Backend",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "The Strapi backend of a JAMstack e-commerce platform built for a Udemy course.",
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
@@ -26,7 +26,7 @@
     "stripe": "^8.135.0"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Zachary Reece"
   },
   "strapi": {
     "uuid": "5e0b8d89-62ac-4e4e-995b-08644071605b"

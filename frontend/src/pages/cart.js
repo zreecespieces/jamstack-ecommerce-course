@@ -5,6 +5,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Layout from "../components/ui/layout"
+import SEO from "../components/ui/seo"
 import CheckoutPortal from "../components/cart/CheckoutPortal"
 import CartItems from "../components/cart/CartItems"
 
@@ -31,6 +32,10 @@ export default function Cart() {
 
   return (
     <Layout>
+      <SEO
+        title="Cart"
+        description="Make one-time purchases or buy a subscription for any of the amazing products at VAR-X."
+      />
       <Grid
         container
         direction="column"
