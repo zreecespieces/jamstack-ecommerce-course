@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import { makeStyles } from "@material-ui/core/styles"
+import { GatsbyImage } from "gatsby-plugin-image"
 import { Link } from "gatsby"
 
 import Rating from "../home/Rating"
@@ -84,7 +85,7 @@ const useStyles = makeStyles(theme => ({
 export default function QuickView({
   open,
   setOpen,
-  url,
+  image,
   name,
   price,
   product,
@@ -122,8 +123,8 @@ export default function QuickView({
               .split(" ")[0]
               .toLowerCase()}${hasStyles ? `?style=${variant.style}` : ""}`}
           >
-            <img
-              src={url}
+            <GatsbyImage
+              image={image}
               alt="product image"
               className={classes.productImage}
             />

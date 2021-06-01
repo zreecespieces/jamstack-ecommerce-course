@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const useStyles = makeStyles(theme => ({
   selected: {
@@ -37,27 +38,33 @@ export default function ProductImages({
 }) {
   const classes = useStyles()
 
+  const image = getImage(images[selectedImage].localFile)
+
   return (
     <Grid item container direction="column" alignItems="center" lg={6}>
       <Grid item>
-        <img
-          src={images[selectedImage].url}
+        <GatsbyImage
+          image={image}
           alt="product_large"
           className={classes.selected}
         />
       </Grid>
       <Grid item container justify="center">
-        {images.map((image, i) => (
-          <Grid item classes={{ root: classes.imageItem }} key={image.url}>
-            <IconButton onClick={() => setSelectedImage(i)}>
-              <img
-                src={image.url}
-                alt={`product_small${i}`}
-                className={classes.small}
-              />
-            </IconButton>
-          </Grid>
-        ))}
+        {images.map((imageData, i) => {
+          const image = getImage(imageData.localFile)
+
+          return (
+            <Grid item classes={{ root: classes.imageItem }} key={i}>
+              <IconButton onClick={() => setSelectedImage(i)}>
+                <GatsbyImage
+                  image={image}
+                  alt={`product_small${i}`}
+                  className={classes.small}
+                />
+              </IconButton>
+            </Grid>
+          )
+        })}
       </Grid>
     </Grid>
   )

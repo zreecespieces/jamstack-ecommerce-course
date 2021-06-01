@@ -8,6 +8,7 @@ import clsx from "clsx"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import promoAdornment from "../../images/promo-adornment.svg"
 import explore from "../../images/explore.svg"
@@ -98,7 +99,11 @@ export default function PromotionalProducts() {
             }
             variants {
               images {
-                url
+                localFile {
+                  childImageSharp {
+                    gatsbyImageData
+                  }
+                }
               }
             }
           }
@@ -109,8 +114,10 @@ export default function PromotionalProducts() {
 
   var slides = []
 
-  data.allStrapiProduct.edges.map(({ node }, i) =>
-    slides.push({
+  data.allStrapiProduct.edges.map(({ node }, i) => {
+    const image = getImage(node.variants[0].images[0].localFile)
+
+    return slides.push({
       key: i,
       content: (
         <Grid container direction="column" alignItems="center">
@@ -124,10 +131,11 @@ export default function PromotionalProducts() {
                 }),
               }}
             >
-              <img
-                src={node.variants[0].images[0].url}
+              <GatsbyImage
+                image={image}
                 alt={`image-${i}`}
                 className={classes.carouselImage}
+                objectFit="contain"
               />
             </IconButton>
           </Grid>
@@ -143,7 +151,7 @@ export default function PromotionalProducts() {
       description: node.description,
       url: `/${node.category.name.toLowerCase()}`,
     })
-  )
+  })
 
   return (
     <Grid

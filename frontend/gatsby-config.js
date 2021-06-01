@@ -25,6 +25,7 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-material-ui`,
     `gatsby-plugin-sitemap`,
+    `gatsby-plugin-image`,
     {
       resolve: `gatsby-plugin-robots-txt`,
       options: {
@@ -49,7 +50,7 @@ module.exports = {
       options: {
         apiURL: process.env.GATSBY_STRAPI_URL,
         queryLimit: 1000, // Default to 100
-        contentTypes: [`product`, `category`, `variant`],
+        collectionTypes: [`product`, `category`, `variant`],
       },
     },
     {
@@ -60,7 +61,16 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        defaults: {
+          formats: [`auto`, `webp`],
+          placeholder: "blurred",
+          breakpoints: [300, 600, 960, 1280, 1920],
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {

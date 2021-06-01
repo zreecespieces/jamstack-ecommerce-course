@@ -8,6 +8,7 @@ import Chip from "@material-ui/core/Chip"
 import { useQuery } from "@apollo/client"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import frame from "../../images/product-frame-grid.svg"
 import explore from "../../images/explore.svg"
@@ -93,6 +94,7 @@ export default function FeaturedProduct({
 }) {
   const classes = useStyles()
   const [rating, setRating] = useState(0)
+  const image = getImage(node.variants[0].images[0].localFile)
 
   const alignment = matchesMD
     ? "center"
@@ -127,8 +129,8 @@ export default function FeaturedProduct({
         onClick={() => (expanded === i ? setExpanded(null) : setExpanded(i))}
         classes={{ root: classes.frame }}
       >
-        <img
-          src={node.variants[0].images[0].url}
+        <GatsbyImage
+          image={image}
           alt={node.name}
           className={classes.featured}
         />
