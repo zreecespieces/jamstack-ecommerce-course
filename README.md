@@ -1,5 +1,5 @@
 # A Complete Guide to the JAMstack and React E-Commerce
-![course icon](https://i.ibb.co/Ph3cYcY/Course-Icon.png)
+![course icon](https://i.ibb.co/TKr3S3v/Course-Icon.png)
 **Get ready to build the most modern, comprehensive, feature-rich, full stack e-commerce platform in any online course!** By the end of this course, _you'll be completely confident in building large applications with complex functionality all on your own._
 
 With over _75 hours_ of content across more than _475 lectures,_ this is **a complete full stack masterclass!** I'll be teaching you everything there is to know about building powerful full stack applications from scratch based on the next-generation JAMstack architecture.
